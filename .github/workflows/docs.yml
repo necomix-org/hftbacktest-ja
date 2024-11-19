@@ -1,0 +1,40 @@
+name: Docs
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - uses: pandoc/actions/setup@v1
+      - name: Run python -m sphinx
+        run: |
+          cp examples/*.ipynb docs/tutorials
+          uv run \
+            --python 3.10 \
+            --with pip,setuptools,sphinx,readthedocs-sphinx-ext \
+            --with-requirements docs/requirements.txt \
+            --with-editable ./py-hftbacktest \
+            -m sphinx -T -b html -d _build/doctrees -D language=en ./docs ./docs/_build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/_build
+  deploy:
+    permissions:
+      id-token: write
+      pages: write
+    needs: build
+    if: github.event_name == 'push' && github.ref_name == 'master'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - id: deployment
+        uses: actions/deploy-pages@v4
