@@ -1,73 +1,71 @@
-Latency Models
-==============
+レイテンシーモデル
+==================
 
-Overview
---------
+概要
+----
 
-Latency is an important factor that you need to take into account when you backtest your HFT strategy.
-HftBacktest has three types of latencies.
+レイテンシーは、HFT 戦略をバックテストする際に考慮する必要がある重要な要素です。
+HftBacktest には、3 種類のレイテンシーがあります。
 
 .. image:: images/latencies.png
 
-* Feed latency
+* フィードレイテンシー
 
-This is the latency between the time the exchange sends the feed events such as order book change or trade and the time
-it is received by the local.
-This latency is dealt with through two different timestamps: local timestamp and exchange timestamp.
+これは、取引所が注文書の変更や取引などのフィードイベントを送信する時間と、ローカルで受信される時間の間のレイテンシーです。
+このレイテンシーは、ローカルタイムスタンプと取引所タイムスタンプの 2 つの異なるタイムスタンプを通じて処理されます。
 
-* Order entry latency
+* 注文エントリレイテンシー
 
-This is the latency between the time you send an order request and the time it is processed by the exchange's matching engine.
+これは、注文リクエストを送信する時間と、取引所のマッチングエンジンによって処理される時間の間のレイテンシーです。
 
-* Order response latency
+* 注文応答レイテンシー
 
-This is the latency between the time the exchange's matching engine processes an order request and the time the order
-response is received by the local. The response to your order fill is also affected by this type of latency.
+これは、取引所のマッチングエンジンが注文リクエストを処理する時間と、注文応答がローカルで受信される時間の間のレイテンシーです。注文のフィルに対する応答もこのタイプのレイテンシーの影響を受けます。
 
 .. image:: images/latency-comparison.png
 
-Order Latency Models
---------------------
+注文レイテンシーモデル
+----------------------
 
-HftBacktest provides the following order latency models and you can also implement your own latency model.
+HftBacktest は、次の注文レイテンシーモデルを提供しており、独自のレイテンシーモデルを実装することもできます。
 
 ConstantLatency
 ~~~~~~~~~~~~~~~
-It's the most basic model that uses constant latencies. You just set the latencies.
+これは、一定のレイテンシーを使用する最も基本的なモデルです。レイテンシーを設定するだけです。
 
-You can find details below.
+詳細は以下をご覧ください。
 
 * `ConstantLatency <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/models/struct.ConstantLatency.html>`_
-  and :meth:`constant_latency <hftbacktest.BacktestAsset.constant_latency>`
+  および :meth:`constant_latency <hftbacktest.BacktestAsset.constant_latency>`
 
 IntpOrderLatency
 ~~~~~~~~~~~~~~~~
-This model interpolates order latency based on the actual order latency data.
-This is the most accurate among the provided models if you have the data with a fine time interval.
-You can collect the latency data by submitting unexecutable orders regularly.
+このモデルは、実際の注文レイテンシーデータに基づいて注文レイテンシーを補間します。
+細かい時間間隔でデータを持っている場合、提供されているモデルの中で最も正確です。
+実行不可能な注文を定期的に送信することで、レイテンシーデータを収集できます。
 
-You can find details below.
+詳細は以下をご覧ください。
 
 * `IntpOrderLatency <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/models/struct.IntpOrderLatency.html>`_
-  and :meth:`intp_order_latency <hftbacktest.BacktestAsset.intp_order_latency>`
+  および :meth:`intp_order_latency <hftbacktest.BacktestAsset.intp_order_latency>`
 
-**Data example**
+**データ例**
 
 .. code-block::
 
-    req_ts (request timestamp at local), exch_ts (exchange timestamp), resp_ts (receipt timestamp at local), _padding
+    req_ts (ローカルでのリクエストタイムスタンプ), exch_ts (取引所タイムスタンプ), resp_ts (ローカルでの受信タイムスタンプ), _padding
     1670026844751525000, 1670026844759000000, 1670026844762122000, 0
     1670026845754020000, 1670026845762000000, 1670026845770003000, 0
 
 FeedLatency
 ~~~~~~~~~~~
-If the live order latency data is unavailable, you can generate artificial order latency using feed latency.
-Please refer to :doc:`this tutorial <tutorials/Order Latency Data>` for guidance.
+ライブ注文レイテンシーデータが利用できない場合は、フィードレイテンシーを使用して人工的な注文レイテンシーを生成できます。
+ガイダンスについては、:doc:`このチュートリアル <tutorials/Order Latency Data>` を参照してください。
 
-Implement your own order latency model
+独自の注文レイテンシーモデルを実装する
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-You need to implement the following trait.
+次のトレイトを実装する必要があります。
 
 * `LatencyModel <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/models/trait.LatencyModel.html>`_
 
-Please refer to `the latency model implementation <https://github.com/nkaz001/hftbacktest/blob/master/hftbacktest/src/backtest/models/latency.rs>`_.
+レイテンシーモデルの実装については、`こちら <https://github.com/nkaz001/hftbacktest/blob/master/hftbacktest/src/backtest/models/latency.rs>`_ を参照してください。

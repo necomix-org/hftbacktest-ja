@@ -1,186 +1,166 @@
-==========
-Order Fill
-==========
+================
+注文の埋め合わせ
+================
 
-Exchange Models
-===============
+取引所モデル
+============
 
-HftBacktest is a market-data replay-based backtesting tool, which means your order cannot make any changes to the
-simulated market, no market impact is considered. Therefore, one of the most important assumptions is that your order is
-small enough not to make any market impact. In the end, you must test it in a live market with real market participants
-and adjust your backtesting based on the discrepancies between the backtesting results and the live outcomes.
+HftBacktest は、市場データのリプレイに基づくバックテストツールであり、注文がシミュレートされた市場に変更を加えることはできません。市場への影響は考慮されません。したがって、最も重要な仮定の1つは、注文が市場に影響を与えないほど小さいことです。最終的には、実際の市場参加者とともにライブ市場でテストし、バックテスト結果とライブ結果の相違に基づいてバックテストを調整する必要があります。
 
-Hftbacktest offers two types of exchange simulation. :ref:`order_fill_no_partial_fill_exchange` is the default exchange simulation where
-no partial fills occur. :ref:`order_fill_partial_fill_exchange` is the extended exchange simulation that accounts for partial fills in
-specific cases. Since the market-data replay-based backtesting cannot alter the market, some partial fill cases may
-still be unrealistic, such as taking market liquidity. This is because even if your order takes market liquidity, the
-replayed market data's market depth and trades cannot change. It is essential to understand the underlying assumptions
-in each backtesting simulation.
+Hftbacktest は、2 種類の取引所シミュレーションを提供します。:ref:`order_fill_no_partial_fill_exchange` は、部分的な埋め合わせが発生しないデフォルトの取引所シミュレーションです。:ref:`order_fill_partial_fill_exchange` は、特定のケースで部分的な埋め合わせを考慮する拡張取引所シミュレーションです。市場データのリプレイに基づくバックテストでは市場を変更できないため、一部の部分的な埋め合わせケースは依然として非現実的である可能性があります。たとえば、市場の流動性を取る場合です。これは、注文が市場の流動性を取る場合でも、リプレイされた市場データの市場深度と取引は変更できないためです。各バックテストシミュレーションの基礎となる仮定を理解することが重要です。
 
 .. _order_fill_no_partial_fill_exchange:
 
 NoPartialFillExchange
 ---------------------
 
-Conditions for Full Execution
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+完全実行の条件
+~~~~~~~~~~~~~~
 
-Buy order in the order book
+注文書の買い注文
 
-* Your order price >= the best ask price
-* Your order price > sell trade price
-* Your order is at the front of the queue && your order price == sell trade price
+* 注文価格 >= 最良売り価格
+* 注文価格 > 売り取引価格
+* 注文がキューの先頭にあり、注文価格 == 売り取引価格
 
-Sell order in the order book
+注文書の売り注文
 
-* Your order price <= the best bid price
-* Your order price < buy trade price
-* Your order is at the front of the queue && your order price == buy trade price
+* 注文価格 <= 最良買い価格
+* 注文価格 < 買い取引価格
+* 注文がキューの先頭にあり、注文価格 == 買い取引価格
 
-Liquidity-Taking Order
-~~~~~~~~~~~~~~~~~~~~~~
+流動性を取る注文
+~~~~~~~~~~~~~~~~
 
-    Regardless of the quantity at the best, liquidity-taking orders will be fully executed at the best. Be aware that
-    this may cause unrealistic fill simulations if you attempt to execute a large quantity.
+    最良の数量に関係なく、流動性を取る注文は最良で完全に実行されます。大量の数量を実行しようとすると、非現実的な埋め合わせシミュレーションが発生する可能性があることに注意してください。
 
-You can find details below.
+詳細は以下をご覧ください。
 
 * `NoPartialFillExchange <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/proc/struct.NoPartialFillExchange.html>`_
-  and :meth:`no_partial_fill_exchange <hftbacktest.BacktestAsset.no_partial_fill_exchange>`
+  および :meth:`no_partial_fill_exchange <hftbacktest.BacktestAsset.no_partial_fill_exchange>`
 
 .. _order_fill_partial_fill_exchange:
 
 PartialFillExchange
 -------------------
 
-Conditions for Full Execution
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+完全実行の条件
+~~~~~~~~~~~~~~
 
-Buy order in the order book
+注文書の買い注文
 
-* Your order price >= the best ask price
-* Your order price > sell trade price
+* 注文価格 >= 最良売り価格
+* 注文価格 > 売り取引価格
 
-Sell order in the order book
+注文書の売り注文
 
-* Your order price <= the best bid price
-* Your order price < buy trade price
+* 注文価格 <= 最良買い価格
+* 注文価格 < 買い取引価格
 
-Conditions for Partial Execution
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+部分実行の条件
+~~~~~~~~~~~~~~
 
-Buy order in the order book
+注文書の買い注文
 
-* Filled by (remaining) sell trade quantity: your order is at the front of the queue && your order price == sell
-  trade price
+* 残りの売り取引数量によって埋め合わせ: 注文がキューの先頭にあり、注文価格 == 売り取引価格
 
-Sell order in the order book
+注文書の売り注文
 
-* Filled by (remaining) buy trade quantity: your order is at the front of the queue && your order price == buy trade
-  price
+* 残りの買い取引数量によって埋め合わせ: 注文がキューの先頭にあり、注文価格 == 買い取引価格
 
-Liquidity-Taking Order
-~~~~~~~~~~~~~~~~~~~~~~
+流動性を取る注文
+~~~~~~~~~~~~~~~~
 
-    Liquidity-taking orders will be executed based on the quantity of the order book, even though the best price and
-    quantity do not change due to your execution. Be aware that this may cause unrealistic fill simulations if you
-    attempt to execute a large quantity.
+    流動性を取る注文は、注文書の数量に基づいて実行されます。最良価格と数量は実行によって変更されませんが、大量の数量を実行しようとすると、非現実的な埋め合わせシミュレーションが発生する可能性があることに注意してください。
 
-You can find details below.
+詳細は以下をご覧ください。
 
 * `PartialFillExchange <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/proc/struct.PartialFillExchange.html>`_
-  and :meth:`partial_fill_exchange <hftbacktest.BacktestAsset.partial_fill_exchange>`
+  および :meth:`partial_fill_exchange <hftbacktest.BacktestAsset.partial_fill_exchange>`
 
-Queue Models
+キューモデル
 ============
 
-Knowing your order's queue position is important to achieve accurate order fill simulation in backtesting depending on
-the liquidity of an order book and trading activities.
-If an exchange doesn't provide Market-By-Order, you have to guess it by modeling.
-HftBacktest currently only supports Market-By-Price that is most crypto exchanges provide and it provides the following
-queue position models for order fill simulation.
+注文のキュー位置を知ることは、注文書の流動性と取引活動に応じて、バックテストで正確な注文埋め合わせシミュレーションを実現するために重要です。
+取引所が Market-By-Order を提供しない場合、モデル化によって推測する必要があります。
+HftBacktest は現在、ほとんどの暗号取引所が提供する Market-By-Price のみをサポートしており、注文埋め合わせシミュレーションのための以下のキュー位置モデルを提供しています。
 
-Please refer to the details at `Models <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/models/index.html>`.
+詳細は `Models <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/models/index.html>`_ を参照してください。
 
 .. image:: images/liquidity-and-trade-activities.png
 
 RiskAverseQueueModel
 --------------------
 
-This model is the most conservative model in terms of the chance of fill in the queue.
-The decrease in quantity by cancellation or modification in the order book happens only at the tail of the queue so your
-order queue position doesn't change.
-The order queue position will be advanced only if a trade happens at the price.
+このモデルは、キュー内の埋め合わせの機会に関して最も保守的なモデルです。
+注文書の数量の減少は、キューの末尾でのみ発生するため、注文のキュー位置は変わりません。
+注文のキュー位置は、価格で取引が発生した場合にのみ進行します。
 
-You can find details below.
+詳細は以下をご覧ください。
 
 * `RiskAdverseQueueModel <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/models/struct.RiskAdverseQueueModel.html>`_
-  and :meth:`risk_adverse_queue_model <hftbacktest.BacktestAsset.risk_adverse_queue_model>`
+  および :meth:`risk_adverse_queue_model <hftbacktest.BacktestAsset.risk_adverse_queue_model>`
 
 .. _order_fill_prob_queue_model:
 
 ProbQueueModel
 --------------
-Based on a probability model according to your current queue position, the decrease in quantity happens at both before
-and after the queue position.
-So your queue position is also advanced according to the probability.
-This model is implemented as described in
+現在のキュー位置に応じた確率モデルに基づいて、数量の減少はキュー位置の前後の両方で発生します。
+したがって、キュー位置も確率に応じて進行します。
+このモデルは、以下に記載されているように実装されています。
 
 * https://quant.stackexchange.com/questions/3782/how-do-we-estimate-position-of-our-order-in-order-book
 * https://rigtorp.se/2013/06/08/estimating-order-queue-position.html
 
-You can find details below.
+詳細は以下をご覧ください。
 
 * `ProbQueueModel <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/models/struct.ProbQueueModel.html>`_
 
 * `PowerProbQueueFunc <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/models/struct.PowerProbQueueFunc.html>`_
-  and :meth:`power_prob_queue_model <hftbacktest.BacktestAsset.power_prob_queue_model>`
+  および :meth:`power_prob_queue_model <hftbacktest.BacktestAsset.power_prob_queue_model>`
 
 * `PowerProbQueueFunc2 <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/models/struct.PowerProbQueueFunc2.html>`_
-  and :meth:`power_prob_queue_model2 <hftbacktest.BacktestAsset.power_prob_queue_model2>`
+  および :meth:`power_prob_queue_model2 <hftbacktest.BacktestAsset.power_prob_queue_model2>`
 
 * `PowerProbQueueFunc3 <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/models/struct.PowerProbQueueFunc3.html>`_
-  and :meth:`power_prob_queue_model3 <hftbacktest.BacktestAsset.power_prob_queue_model3>`
+  および :meth:`power_prob_queue_model3 <hftbacktest.BacktestAsset.power_prob_queue_model3>`
 
 * `LogProbQueueFunc <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/models/struct.LogProbQueueFunc.html>`_
-  and :meth:`log_prob_queue_model <hftbacktest.BacktestAsset.log_prob_queue_model>`
+  および :meth:`log_prob_queue_model <hftbacktest.BacktestAsset.log_prob_queue_model>`
 
 * `LogProbQueueFunc2 <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/models/struct.LogProbQueueFunc2.html>`_
-  and :meth:`log_prob_queue_model2 <hftbacktest.BacktestAsset.log_prob_queue_model2>`
+  および :meth:`log_prob_queue_model2 <hftbacktest.BacktestAsset.log_prob_queue_model2>`
 
-By default, three variations are provided. These three models have different probability profiles.
+デフォルトでは、3 つのバリエーションが提供されています。これらの 3 つのモデルは、異なる確率プロファイルを持っています。
 
 .. image:: images/probqueuemodel.png
 
-The function f = log(1 + x) exhibits a different probability profile depending on the total quantity at the price level,
-unlike power functions.
+関数 f = log(1 + x) は、価格レベルでの総数量に応じて異なる確率プロファイルを示します。これは、べき関数とは異なります。
 
 .. image:: images/probqueuemodel_log.png
 
 .. image:: images/probqueuemodel2.png
 .. image:: images/probqueuemodel3.png
 
-When you set the function f, it should be as follows.
+関数 f を設定する場合、次のようにする必要があります。
 
-* The probability at 0 should be 0 because if the order is at the head of the queue, all decreases should happen after
-  the order.
-* The probability at 1 should be 1 because if the order is at the tail of the queue, all decreases should happen before
-  the order.
+* 0 の確率は 0 である必要があります。キューの先頭に注文がある場合、すべての減少は注文の後に発生するためです。
+* 1 の確率は 1 である必要があります。キューの末尾に注文がある場合、すべての減少は注文の前に発生するためです。
 
-You can see the comparison of the models :doc:`here <tutorials/Probability Queue Models>`.
+モデルの比較は :doc:`here <tutorials/Probability Queue Models>` で確認できます。
 
-Implement a custom queue model
-------------------------------
-You need to implement the following traits in Rust based on your usage requirements.
+カスタムキューモデルの実装
+--------------------------
+使用要件に基づいて、次のトレイトを Rust で実装する必要があります。
 
 * `QueueModel <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/models/trait.QueueModel.html>`_
 * `L3QueueModel <https://docs.rs/hftbacktest/latest/hftbacktest/backtest/models/trait.L3QueueModel.html>`_
 
-Please refer to `the queue model implementation <https://github.com/nkaz001/hftbacktest/blob/master/hftbacktest/src/backtest/models/queue.rs>`_.
+キューモデルの実装については、`the queue model implementation <https://github.com/nkaz001/hftbacktest/blob/master/hftbacktest/src/backtest/models/queue.rs>`_ を参照してください。
 
-References
-==========
-This is initially implemented as described in the following articles.
+参考文献
+========
+これは、以下の記事に記載されているように最初に実装されました。
 
 * http://www.math.ualberta.ca/~cfrei/PIMS/Almgren5.pdf
 * https://quant.stackexchange.com/questions/3782/how-do-we-estimate-position-of-our-order-in-order-book
