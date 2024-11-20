@@ -8,7 +8,7 @@ HftBacktest
 |codeql| |python| |pypi| |downloads| |rustc| |crates| |license| |docs| |roadmap| |github|
 
 高頻度取引バックテストツール
-==============================
+============================
 
 このフレームワークは、高頻度取引およびマーケットメイキング戦略の開発を目的としています。フィードおよび注文のレイテンシー、ならびに注文埋め合わせシミュレーションのための注文キュー位置を考慮することに重点を置いています。このフレームワークは、完全な注文書および取引ティックフィードデータに基づくより正確な市場リプレイベースのバックテストを提供することを目的としています。
 
@@ -23,15 +23,15 @@ HftBacktest
 * 提供されたモデルまたは独自のカスタムモデルを使用して、フィードおよび注文のレイテンシーを考慮したバックテスト。
 * 提供されたモデルまたは独自のカスタムモデルを使用して、注文キュー位置を考慮した注文埋め合わせシミュレーション。
 * 複数資産および複数取引所モデルのバックテスト。
-* 同じアルゴリズムコードを使用してライブトレーディングボットを展開: 現在は Binance Futures および Bybit に対応。(Rust の��)
+* 同じアルゴリズムコードを使用してライブトレーディングボットを展開: 現在は Binance Futures および Bybit に対応。(Rust のみ)
 
 ドキュメント
-=============
+============
 
 `こちら <https://hftbacktest.readthedocs.io/>`_ で完全なドキュメントを参照してください。
 
 始め方
-=======
+======
 
 インストール
 ------------
@@ -49,7 +49,7 @@ hftbacktest は Python 3.10+ をサポートしています。``pip`` を使用�
  git clone https://github.com/nkaz001/hftbacktest
 
 データソースとフォーマット
---------------------
+--------------------------
 
 `Data <https://hftbacktest.readthedocs.io/en/latest/data.html>`_ または `Data Preparation <https://hftbacktest.readthedocs.io/en/latest/tutorials/Data%20Preparation.html>`_ を参照してください。
 
@@ -158,7 +158,7 @@ hftbacktest を使用したバックテストの様子を以下のコードス�
 
 
 チュートリアル
-=============
+==============
 * `Data Preparation <https://hftbacktest.readthedocs.io/en/latest/tutorials/Data%20Preparation.html>`_
 * `Getting Started <https://hftbacktest.readthedocs.io/en/latest/tutorials/Getting%20Started.html>`_
 * `Working with Market Depth and Trades <https://hftbacktest.readthedocs.io/en/latest/tutorials/Working%20with%20Market%20Depth%20and%20Trades.html>`_
@@ -188,7 +188,7 @@ Binance Futures のバックテストの完全なプロセス
 `migration guide <https://hftbacktest.readthedocs.io/en/latest/migration2.html>`_ を参照してください。
 
 ロードマップ
-=========
+============
 
 現在、新機能は Numba の制限のために Rust で実装されています。高頻度データのサイズを考慮すると、パフォーマンスが重要です。
 差し迫ったタスクは、Rust 実装をバックエンドとして使用して、Python の hftbacktest と Rust の hftbacktest を統合することです。
@@ -273,12 +273,12 @@ hftbacktest への貢献を検討していただきありがとうございま�
    :caption: User Guide
    :hidden:
 
-   Migration To v2 <migration2>
-   Data <data>
-   Latency Models <latency_models>
-   Order Fill <order_fill>
-   JIT Compilation Overhead <jit_compilation_overhead>
-   Debugging Backtesting and Live Discrepancies <debugging_backtesting_and_live_discrepancies>
+   v2 へのマイグレーション <migration2>
+   データ <data>
+   レイテンシーモデル <latency_models>
+   注文の埋め合わせ <order_fill>
+   JIT コンパイルのオーバーヘッド <jit_compilation_overhead>
+   バックテストとライブの相違点のデバッグ <debugging_backtesting_and_live_discrepancies>
 
 .. toctree::
    :maxdepth: 2

@@ -9,3 +9,8 @@ docs/_build
 **/target
 **/tmp_*
 **/*.so
+
+_build/
+docs/tutorials/*.ipynb
+!docs/tutorials/Risk Mitigation through Price Protection in Extreme Market Conditions.ipynb
+!docs/tutorials/examples.rst

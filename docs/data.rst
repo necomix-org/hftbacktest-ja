@@ -1,10 +1,10 @@
 データ
-====
+======
 
 `Data Collector <https://github.com/nkaz001/hftbacktest/tree/master/collector>`_ または :doc:`Data Preparation <tutorials/Data Preparation>` を参照して、フィードデータの収集と変換について確認してください。
 
 フォーマット
-------
+------------
 
 `hftbacktest` は `numpy` 構造化配列を処理できます。データは以下の順序で 8 つのフィールドを持ちます。
 詳細は `Event <https://docs.rs/hftbacktest/0.3.1/hftbacktest/types/struct.Event.html>`_ を参照してください。
@@ -201,7 +201,7 @@
      - 0.0
 
 検証
-----------
+----
 
 1. すべてのタイムスタンプは正しい順序、時系列順でなければなりません。
 
