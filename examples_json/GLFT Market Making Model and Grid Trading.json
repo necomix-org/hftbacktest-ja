@@ -8,44 +8,44 @@
   {
     "index": 1,
     "source": [
-      "## Overview\n",
+      "## 概要\n",
       "\n",
-      "Grid trading is straightforward and easy to comprehend, and it excels in high-frequency environments. However, given the intricacies of high-frequency trading, which necessitate comprehensive tick-by-tick simulation with latencies and order fill simulation, optimizing the ideal spread, order interval, and skew can be a challenging task. Furthermore, these values fluctuate over time, especially in response to market conditions, making a fixed setup less than optimal.\n",
+      "グリッドトレーディングはシンプルで理解しやすく、高頻度環境で優れています。しかし、高頻度取引の複雑さを考えると、理想的なスプレッド、注文間隔、スキューを最適化することは困難です。さらに、これらの値は市場の状況に応じて変動するため、固定された設定は最適ではありません。\n",
       "\n",
-      "To improve grid trading's adaptability, one solution is to combine it with a well-developed market-making model. Let's delve into how this can be achieved."
+      "グリッドトレーディングの適応性を向上させるための1つの解決策は、よく開発されたマーケットメイキングモデルと組み合わせることです。これがどのように実現できるかを見てみましょう。"
     ]
   },
   {
     "index": 2,
     "source": [
-      "## Guéant–Lehalle–Fernandez-Tapia Market Making Model\n",
+      "## Guéant–Lehalle–Fernandez-Tapia マーケットメイキングモデル\n",
       "\n",
-      "This model represents an advanced evolution of the well-known Avellaneda-Stoikov model and provides a closed-form approximation of asymptotic behavior for terminal time T. Simply, this model does not specify a terminal time, which makes it suitable for typical stocks, spot assets, or crypto perpetual contracts. By employing this model, it is anticipated that the half spread and skew will be accurately adjusted according to market conditions.\n",
+      "このモデルは、よく知られたアベラネダ・ストイコビッチモデルの進化形であり、終端時間Tの漸近的な挙動の閉形式近似を提供します。簡単に言えば、このモデルは終端時間を指定しないため、典型的な株式、スポット資産、または暗号通貨の永久契約に適しています。このモデルを使用することで、市場の状況に応じてハーフスプレッドとスキューが正確に調整されることが期待されます。\n",
       "\n",
-      "In this analysis, we will focus on equations (4.6) and (4.7) in [Optimal market making](https://arxiv.org/abs/1605.01862) and explore how they can be applied to real-world scenarios.\n",
+      "この分析では、[Optimal market making](https://arxiv.org/abs/1605.01862) の式(4.6)と(4.7)に焦点を当て、それらが実際のシナリオにどのように適用できるかを探ります。\n",
       "\n",
-      "The optimal bid quote depth, $\\delta^{b*}_{approx}$, and ask quote depth, $\\delta^{a*}_{approx}$, are derived from the fair price as follows:\n",
+      "最適なビッドクォート深度 $\\delta^{b*}_{approx}$ とアスククォート深度 $\\delta^{a*}_{approx}$ は、公正価格から次のように導出されます:\n",
       "\n",
       "\\begin{align}\n",
       "\\delta^{b*}_{approx}(q) = {1 \\over {\\xi \\Delta}}log(1 + {\\xi \\Delta \\over k}) + {{2q + \\Delta} \\over 2}\\sqrt{{{\\gamma \\sigma^2} \\over {2A\\Delta k}}(1 + {\\xi \\Delta \\over k})^{{k \\over {\\xi \\Delta}} + 1}} \\label{eq4.6}\\tag{4.6} \\\\\n",
       "\\delta^{a*}_{approx}(q) = {1 \\over {\\xi \\Delta}}log(1 + {\\xi \\Delta \\over k}) - {{2q - \\Delta} \\over 2}\\sqrt{{{\\gamma \\sigma^2} \\over {2A\\Delta k}}(1 + {\\xi \\Delta \\over k})^{{k \\over {\\xi \\Delta}} + 1}} \\label{eq4.7}\\tag{4.7}\n",
       "\\end{align}\n",
       "\n",
-      "Let's introduce $c_1$ and $c_2$ and define them by extracting the volatility 𝜎 from the square root:\n",
+      "次に、$c_1$ と $c_2$ を導入し、平方根からボラティリティ 𝜎 を抽出して定義します:\n",
       "\n",
       "\\begin{align}\n",
       "c_1 = {1 \\over {\\xi \\Delta}}log(1 + {\\xi \\Delta \\over k}) \\\\\n",
       "c_2 = \\sqrt{{\\gamma \\over {2A\\Delta k}}(1 + {\\xi \\Delta \\over k})^{{k \\over {\\xi \\Delta}} + 1}}\n",
       "\\end{align}\n",
       "\n",
-      "Now we can rewrite equations (4.6) and (4.7) as follows:\n",
+      "これで、式(4.6)と(4.7)を次のように書き換えることができます:\n",
       "\n",
       "\\begin{align}\n",
       "\\delta^{b*}_{approx}(q) = c_1 + {\\Delta \\over 2} \\sigma c_2 + q \\sigma c_2 \\\\\n",
       "\\delta^{a*}_{approx}(q) = c_1 + {\\Delta \\over 2} \\sigma c_2 - q \\sigma c_2\n",
       "\\end{align}\n",
       "\n",
-      "As you can see, this consists of the half spread and skew. $q$ represents a market maker's inventory(position).\n",
+      "ご覧のとおり、これはハーフスプレッドとスキューで構成されています。$q$ はマーケットメイカーの在庫（ポジション）を表します。\n",
       "\n",
       "\\begin{align}\n",
       "\\text{half spread} = C_1 + {\\Delta \\over 2} \\sigma C_2 \\\\\n",
@@ -54,14 +54,14 @@
       "\\delta^{a*}_{approx}(q) = \\text{half spread} - \\text{skew} \\times q\n",
       "\\end{align}\n",
       "\n",
-      "Thus,\n",
+      "したがって、\n",
       "\n",
       "\\begin{align}\n",
       "\\text{bid price} = \\text{fair price} - (\\text{half spread} + \\text{skew} \\times q) \\\\\n",
       "\\text{ask price} = \\text{fair price} + (\\text{half spread} - \\text{skew} \\times q)\n",
       "\\end{align}\n",
       "\n",
-      "You can find similarities in what the following two articles describe.  \n",
+      "次の2つの記事に記載されている内容に類似点が見られます。  \n",
       "[Stochastic Control Theory and High Frequency Trading](https://ieor.columbia.edu/files/seasdepts/industrial-engineering-operations-research/pdf-files/Borden_D_FESeminar_Sp10.pdf)  \n",
       "[How to Market Make Bitcoin Derivatives Lesson 2](https://blog.bitmex.com/how-to-market-make-bitcoin-derivatives-lesson-2/)  "
     ]
@@ -69,104 +69,104 @@
   {
     "index": 3,
     "source": [
-      "## Calculating Trading Intensity\n",
+      "## 取引強度の計算\n",
       "\n",
-      "To determine the optimal quotes, we need to compute $c_1$ and $c_2$. In order to do that, we need to calibrate $A$ and $k$ of trading intensity, as well as calculate the market volatility $\\sigma$.\n",
+      "最適なクォートを決定するためには、$c_1$ と $c_2$ を計算する必要があります。そのためには、取引強度の $A$ と $k$ をキャリブレーションし、市場のボラティリティ $\\sigma$ を計算する必要があります。\n",
       "\n",
-      "Trading intensity is defined as:\n",
+      "取引強度は次のように定義されます:\n",
       "\n",
       "$$ \\lambda = A \\exp (-k \\delta) $$\n",
       "\n",
-      "We will calibrate these values using market data according to [the this article](https://quant.stackexchange.com/questions/36073/how-does-one-calibrate-lambda-in-a-avellaneda-stoikov-market-making-problem). In order to do that, we need to record market order's arrivals.\n",
+      "これらの値を市場データを使用してキャリブレーションします。詳細は[この記事](https://quant.stackexchange.com/questions/36073/how-does-one-calibrate-lambda-in-a-avellaneda-stoikov-market-making-problem)をご覧ください。そのためには、市場注文の到着を記録する必要があります。\n",
       "\n",
-      "Our market maker will react every 100ms, which means they will post or cancel orders at this interval. So, our quotes' trading intensity will be measured in the same time-step. Ideally, we should also account for our orders' queue position; however, to simplify the problem, we will not consider the order queue position in this analysis."
+      "私たちのマーケットメイカーは100msごとに反応し、この間隔で注文を投稿またはキャンセルします。したがって、クォートの取引強度も同じタイムステップで測定されます。理想的には、注文のキュー位置も考慮する必要がありますが、この分析では問題を単純化するために注文キュー位置は考慮しません。"
     ]
   },
   {
     "index": 5,
     "source": [
-      "Since we're not considering the order's queue position when measuring trading intensity, only market trades that cross our quote will be counted as executed."
+      "取引強度を測定する際に注文のキュー位置を考慮しないため、クォートをクロスする市場取引のみが実行されたと見なされます。"
     ]
   },
   {
     "index": 7,
     "source": [
-      "Run HftBacktest to replay the market and record order arrival depth and price changes."
+      "HftBacktestを実行して市場を再生し、注文到着深度と価格変動を記録します。"
     ]
   },
   {
     "index": 9,
     "source": [
-      "Measure trading intensity from the recorded order arrival depth and plot it."
+      "記録された注文到着深度から取引強度を測定し、プロットします。"
     ]
   },
   {
     "index": 12,
     "source": [
-      "Calibrate $A$ and $k$ using linear regression, since by taking the logarithm of both sides of lambda, it becomes $log \\lambda = -k \\delta + logA$."
+      "線形回帰を使用して $A$ と $k$ をキャリブレーションします。両辺の対数を取ると、$log \\lambda = -k \\delta + logA$ となります。"
     ]
   },
   {
     "index": 16,
     "source": [
-      "As you can see, the fitted lambda function is not accurate across the entire range. More specifically, it overestimates the trading intensity for the shallow range near the mid-price and underestimates it for the deep range away from the mid-price.\n",
+      "ご覧のとおり、フィットされたラムダ関数は全範囲で正確ではありません。特に、ミッドプライスに近い浅い範囲では取引強度を過大評価し、ミッドプライスから離れた深い範囲では過小評価します。\n",
       "\n",
-      "Since our quotes are likely to be placed in the range close to the mid-price, at least under typical market conditions (excluding high volatility conditions), we will refit the function specifically for the nearest range."
+      "私たちのクォートは、少なくとも典型的な市場条件下（高ボラティリティ条件を除く）では、ミッドプライスに近い範囲に配置される可能性が高いため、特に最も近い範囲に対して関数を再フィットします。"
     ]
   },
   {
     "index": 19,
     "source": [
-      "Now, we have a more accurate trading intensity function. Let's see where our quote will be placed.\n",
+      "これで、より正確な取引強度関数が得られました。次に、クォートがどこに配置されるかを見てみましょう。\n",
       "\n",
-      "But before we do that, let's calculate the volatility first."
+      "その前に、まずボラティリティを計算しましょう。"
     ]
   },
   {
     "index": 21,
     "source": [
-      "Compute $c_1$ and $c_2$ according to the equations."
+      "式に従って $c_1$ と $c_2$ を計算します。"
     ]
   },
   {
     "index": 23,
     "source": [
-      "In the Guéant–Lehalle–Fernandez-Tapia formula, $\\Delta = 1$ and $\\xi = \\gamma$. the value of $\\gamma$ is arbitrarily chosen."
+      "Guéant–Lehalle–Fernandez-Tapia の式では、$\\Delta = 1$ および $\\xi = \\gamma$ です。$\\gamma$ の値は任意に選択されます。"
     ]
   },
   {
     "index": 25,
     "source": [
-      "What does it mean when your quote is positioned 20 ticks away from the mid-price? By analyzing the recorded order arrival depth, you can identify the number of market trades you'll participate in as a market maker, measured in terms of count instead of volume. Additionally, the skew appears to be quite strong, as accumulating just two positions offsets the entire half spread."
+      "クォートがミッドプライスから20ティック離れている場合、それは何を意味しますか？記録された注文到着深度を分析することで、マーケットメイカーとして参加する市場取引の数を特定できます。これは数量ではなくカウントで測定されます。また、スキューが非常に強いことがわかります。2つのポジションを積み上げるだけで、全体のハーフスプレッドがオフセットされます。"
     ]
   },
   {
     "index": 27,
     "source": [
-      "Approximately 1.86% of market trades per given time-step could execute your quote. Be aware that it's not the percentage of the traded quantity."
+      "特定のタイムステップごとに市場取引の約1.86％がクォートを実行する可能性があります。これは取引数量の割合ではないことに注意してください。"
     ]
   },
   {
     "index": 28,
     "source": [
-      "## Implement a Market Maker using the Model\n",
+      "## モデルを使用したマーケットメイカーの実装\n",
       "\n",
       "\n",
       "<div class=\"alert alert-info\">\n",
       "    \n",
-      "**Note:** This example is for educational purposes only and demonstrates effective strategies for high-frequency market-making schemes. All backtests are based on a 0.005% rebate, the highest market maker rebate available on Binance Futures. See <a href=\"https://www.binance.com/en/support/announcement/binance-updates-usd%E2%93%A2-margined-futures-liquidity-provider-program-2024-06-03-fefc6aa25e0947e2bf745c1c56bea13e\">Binance Upgrades USDⓢ-Margined Futures Liquidity Provider Program</a> for more details.\n",
+      "**注:** この例は教育目的のみであり、高頻度マーケットメイキングスキームの効果的な戦略を示しています。すべてのバックテストは、Binance Futuresで利用可能な最高のマーケットメイカーリベートである0.005％のリベートに基づいています。詳細については、<a href=\"https://www.binance.com/en/support/announcement/binance-updates-usd%E2%93%A2-margined-futures-liquidity-provider-program-2024-06-03-fefc6aa25e0947e2bf745c1c56bea13e\">Binance Upgrades USDⓢ-Margined Futures Liquidity Provider Program</a> を参照してください。\n",
       "    \n",
       "</div>\n",
       "\n",
-      "In this example, we will disregard the forecast term and assume that the fair price is equal to the mid price, as we can expect the intrinsic value to remain stable in the short term."
+      "この例では、予測項を無視し、公正価格がミッドプライスと等しいと仮定します。短期的には内在価値が安定していると予想されるためです。"
     ]
   },
   {
     "index": 33,
     "source": [
-      "## Adjustment factors\n",
+      "## 調整係数\n",
       "\n",
-      "It looks like the skew is too strong, which is why the market maker is hesitant to take on the position. To alleviate the skew, you can introduce adjustment factors, $adj_1$ and $adj_2$, to the calculated half spread and skew, as follow.\n",
+      "スキューが強すぎるように見えるため、マーケットメイカーはポジションを取ることに消極的です。スキューを緩和するために、計算されたハーフスプレッドとスキューに調整係数 $adj_1$ と $adj_2$ を導入します。\n",
       "\n",
       "$$\n",
       "\\text{half spread}_{adj} = \\text{half spread} \\times adj_1 \\\\\n",
@@ -177,56 +177,56 @@
   {
     "index": 37,
     "source": [
-      "Improved, but even when accounting for rebates, it can only achieve breakeven at best. As shown below, both the half spread and skew move together, primarily influenced by the $c_2$ and the market volatility."
+      "改善されましたが、リベートを考慮しても、せいぜい損益分岐点に達するだけです。以下に示すように、ハーフスプレッドとスキューは主に $c_2$ と市場のボラティリティに影響されて一緒に動きます。"
     ]
   },
   {
     "index": 40,
     "source": [
-      "In the 5-day backtest, it's evident that profits are generated through rebates, as a result of maintaining high trading volume by consistently posting quotes."
+      "5日間のバックテストでは、クォートを継続的に投稿することで高い取引量を維持し、リベートを通じて利益を上げていることが明らかです。"
     ]
   },
   {
     "index": 43,
     "source": [
-      "## Integrating Grid Trading\n",
+      "## グリッドトレーディングの統合\n",
       "\n",
-      "Creating a grid from the bid and ask prices derived from the Guéant–Lehalle–Fernandez-Tapia market making model."
+      "Guéant–Lehalle–Fernandez-Tapia マーケットメイキングモデルから導出されたビッド価格とアスク価格からグリッドを作成します。"
     ]
   },
   {
     "index": 47,
     "source": [
-      "You can see it works even better with other coins as well. In the next example, we will show how to create multiple markets to achieve better risk-adjusted returns."
+      "他のコインでもうまく機能することがわかります。次の例では、複数の市場を作成してリスク調整後のリターンを向上させる方法を示します。"
     ]
   },
   {
     "index": 50,
     "source": [
-      "## Wrapping up\n",
+      "## まとめ\n",
       "\n",
-      "Thus far, we have illustrated how to apply the model to a real-world example.\n",
+      "これまでに、モデルを実際の例に適用する方法を示しました。\n",
       "\n",
-      "For a more effective market-making algorithm, consider dividing this model into the following categories:\n",
+      "より効果的なマーケットメイキングアルゴリズムを考える際には、このモデルを次のカテゴリに分けて検討してください:\n",
       "\n",
-      "* Half-spread: As shown, the half-spread is a function of trading intensity and market volatility. An exponential function used for trading intensity might not be suitable for the entire range. You could develop a more refined approach to convert trading intensity to half-spread. Additionally, while historical trading intensity and market volatility are utilized here, you could forecast short-term trading intensity and volatility to respond more agilely to changes in market conditions. This might involve strategies that use news, events, liquidity vacuums, and other factors to predict volatility explosions.\n",
-      "\n",
-      "\n",
-      "* Skew: The skew is also a function of trading intensity and market volatility. In this model, only inventory risk is considered, but you can also account for other risks, particularly when making multiple markets. BARRA is a good example of other risks that can be managed similarly.\n",
+      "* ハーフスプレッド: ハーフスプレッドは取引強度と市場のボラティリティの関数です。取引強度に対して指数関数を使用することは、全範囲に対して適切ではないかもしれません。取引強度をハーフスプレッドに変換するためのより洗練されたアプローチを開発することができます。さらに、ここでは過去の取引強度と市場のボラティリティを使用していますが、短期的な取引強度とボラティリティを予測して、市場の状況の変化に迅速に対応することができます。これには、ニュース、イベント、流動性の真空などを使用してボラティリティの爆発を予測する戦略が含まれるかもしれません。\n",
       "\n",
       "\n",
-      "* Fair Value Pricing: In this model, the fair price is equal to the mid-price, however, you need to incorporate forecasts such as the micro-price and fair value pricing through correlated assets to enhance the strategy.\n",
+      "* スキュー: スキューも取引強度と市場のボラティリティの関数です。このモデルでは在庫リスクのみが考慮されていますが、複数の市場を作成する際には他のリスクも考慮することができます。BARRAは他のリスクを同様に管理する良い例です。\n",
       "\n",
       "\n",
-      "* Hedging: Hedging is especially crucial when making multiple markets, as it serves as a valuable tool for managing risks.\n",
+      "* 公正価格の設定: このモデルでは公正価格がミッドプライスと等しいとされていますが、マイクロプライスや関連資産を通じた公正価格の設定などの予測を組み込むことで、戦略を強化することができます。\n",
       "\n",
-      "We will address a few more topics in upcoming examples."
+      "\n",
+      "* ヘッジ: 複数の市場を作成する際には、ヘッジはリスク管理のための貴重なツールです。\n",
+      "\n",
+      "今後の例では、いくつかのトピックについてさらに詳しく説明します。"
     ]
   },
   {
     "index": 51,
     "source": [
-      "## References\n",
+      "## 参考文献\n",
       "[Dealing with the Inventory Risk - A solution to the market making problem](https://arxiv.org/abs/1105.3115)  \n",
       "[Optimal market making](https://arxiv.org/abs/1605.01862)  \n",
       "\n",

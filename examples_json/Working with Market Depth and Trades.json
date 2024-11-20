@@ -2,21 +2,21 @@
   {
     "index": 0,
     "source": [
-      "# Working with Market Depth and Trades"
+      "# Market Depth とトレードの操作"
     ]
   },
   {
     "index": 1,
     "source": [
-      "## Display 3-depth"
+      "## 3-depth の表示"
     ]
   },
   {
     "index": 5,
     "source": [
-      "## Efficient Market Depth Access\n",
+      "## 効率的な Market Depth アクセス\n",
       "\n",
-      "`ROIVectorMarketDepth` provides more efficient market depth access through a vector that holds a limited price range of interest. The backtester using this feature can be created by `ROIVectorMarketDepthBacktest`."
+      "`ROIVectorMarketDepth` は、関心のある限られた価格範囲を保持するベクターを通じて、より効率的な Market Depth アクセスを提供します。この機能を使用するバックテスターは、`ROIVectorMarketDepthBacktest` によって作成できます。"
     ]
   },
   {
@@ -28,13 +28,13 @@
   {
     "index": 14,
     "source": [
-      "## Display last trades between the step"
+      "## ステップ間の最後のトレードを表示"
     ]
   },
   {
     "index": 17,
     "source": [
-      "## Rolling Volume-Weighted Average Price"
+      "## ローリング出来高加重平均価格"
     ]
   }
 ]

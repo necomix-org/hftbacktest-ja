@@ -2,57 +2,57 @@
   {
     "index": 0,
     "source": [
-      "# Order Latency Data\n",
+      "# 注文遅延データ\n",
       "\n",
-      "To obtain more realistic backtesting results, accounting for latencies is crucial. Therefore, it's important to collect both feed data and order data with timestamps to measure your order latency. The best approach is to gather your own order latencies. You can collect order latency based on your live trading or by regularly submitting orders at a price that cannot be filled and then canceling them for recording purposes. However, if you don't have access to them or want to establish a target, you will need to artificially generate order latency. You can model this latency based on factors such as feed latency, trade volume, and the number of events. In this guide, we will demonstrate a simple method to generate order latency from feed latency using a multiplier and offset for adjustment."
+      "より現実的なバックテスト結果を得るためには、レイテンシを考慮することが重要です。したがって、フ���ードデータと注文データの両方をタイムスタンプ付きで収集し、注文遅延を測定する必要があります。最良のアプローチは、自分自身の注文遅延を収集することです。ライブ取引に基づいて注文遅延を収集するか、定期的に埋められない価格で注文を提出し、記録のためにそれらをキャンセルすることで注文遅延を収集できます。ただし、それらにアクセスできない場合や目標を設定したい場合は、人工的に注文遅延を生成する必要があります。このレイテンシは、フィードレイテンシ、取引量、イベントの数などの要因に基づいてモデル化できます。このガイドでは、調整のための乗数とオフセットを使用して、フィードレイテンシから注文遅延を生成する簡単な方法を示します。"
     ]
   },
   {
     "index": 1,
     "source": [
-      "First, loads the feed data."
+      "まず、フィードデータを読み込みます。"
     ]
   },
   {
     "index": 3,
     "source": [
-      "For easy manipulation, converts it into a DataFrame."
+      "操作を簡単にするために、DataFrameに変換します。"
     ]
   },
   {
     "index": 5,
     "source": [
-      "Selects only the events that have both a valid exchange timestamp and a valid local timestamp to get feed latency."
+      "有効な取引所タイムスタンプと有効なローカルタイムスタンプの両方を持つイベントのみを選択して、フィードレイテンシを取得します。"
     ]
   },
   {
     "index": 7,
     "source": [
-      "Reduces the number of rows by resampling to approximately 1-second intervals."
+      "約1秒間隔にリサンプリングして行数を減らします。"
     ]
   },
   {
     "index": 9,
     "source": [
-      "Converts back to the structured NumPy array."
+      "構造化されたNumPy配列に戻します。"
     ]
   },
   {
     "index": 11,
     "source": [
-      "Generates order latency. Order latency consists of two components: the latency until the order request reaches the exchange's matching engine and the latency until the response arrives backto the localy. Order latency is not the same as feed latency and does not need to be proportional to feed latency. However, for simplicity, we model order latency to be proportional to feed latency using a multiplier and offset."
+      "注文遅延を生成します。注文遅延は、注文リクエストが取引所のマッチングエンジンに到達するまでのレイテンシと、応答がローカルに戻るまでのレイテンシの2つのコンポーネントで構成されます。注文遅延はフィードレイテンシと同じではなく、フィードレイテンシに比例する必要はありません。ただし、簡単のために、注文遅延をフィードレイテンシに比例するようにモデル化し、乗数とオフセットを使用します。"
     ]
   },
   {
     "index": 14,
     "source": [
-      "Checks if latency has invalid negative values."
+      "レイテンシに無効な負の値がないか確認します。"
     ]
   },
   {
     "index": 18,
     "source": [
-      "Here, we wrap the entire process into a method with `njit` for increased speed."
+      "ここでは、速度を上げるために`njit`を使用してプロセス全体をメソッドにラップします。"
     ]
   }
 ]

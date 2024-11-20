@@ -2,11 +2,11 @@
   {
     "index": 0,
     "source": [
-      "# High-Frequency Grid Trading\n",
+      "# 高頻度グリッドトレーディング\n",
       "\n",
       "<div class=\"alert alert-info\">\n",
       "    \n",
-      "**Note:** This example is for educational purposes only and demonstrates effective strategies for high-frequency market-making schemes. All backtests are based on a 0.005% rebate, the highest market maker rebate available on Binance Futures. See <a href=\"https://www.binance.com/en/support/announcement/binance-updates-usd%E2%93%A2-margined-futures-liquidity-provider-program-2024-06-03-fefc6aa25e0947e2bf745c1c56bea13e\">Binance Upgrades USDⓢ-Margined Futures Liquidity Provider Program</a> for more details.\n",
+      "**注:** この例は教育目的のみであり、高頻度マーケットメイキングスキームの効果的な戦略を示しています。すべてのバックテストは、Binance Futuresで利用可能な最高のマーケットメイカーリベートである0.005％のリベートに基づいています。詳細については、<a href=\"https://www.binance.com/en/support/announcement/binance-updates-usd%E2%93%A2-margined-futures-liquidity-provider-program-2024-06-03-fefc6aa25e0947e2bf745c1c56bea13e\">Binance Upgrades USDⓢ-Margined Futures Liquidity Provider Program</a> を参照してください。\n",
       "    \n",
       "</div>"
     ]
@@ -14,44 +14,44 @@
   {
     "index": 1,
     "source": [
-      "## Plain High-Frequency Grid Trading\n",
+      "## 単純な高頻度グリッドトレーディング\n",
       "\n",
-      "This is a high-frequency version of Grid Trading that keeps posting orders on grids centered around the mid-price, maintaining a fixed interval and a set number of grids."
+      "これは、ミッドプライスを中心にグリッド上に注文を投稿し続け、固定間隔と設定されたグリッド数を維持する高頻度バージョンのグリッドトレーディングです。"
     ]
   },
   {
     "index": 3,
     "source": [
-      "For generating order latency from the feed data file, which uses feed latency as order latency, please see [Order Latency Data](https://hftbacktest.readthedocs.io/en/latest/tutorials/Order%20Latency%20Data.html)."
+      "フィードデータファイルからフィードレイテンシを注文レイテンシとして使用する注文レイテンシを生成する方法については、[Order Latency Data](https://hftbacktest.readthedocs.io/en/latest/tutorials/Order%20Latency%20Data.html) を参照してください。"
     ]
   },
   {
     "index": 8,
     "source": [
-      "## High-Frequency Grid Trading with Skewing\n",
+      "## スキューを伴う高頻度グリッドトレーディング\n",
       "\n",
-      "By incorporating position-based skewing, the strategy's risk-adjusted returns can be improved."
+      "ポジションベースのスキューを組み込むことで、戦略のリスク調整後のリターンを向上させることができます。"
     ]
   },
   {
     "index": 10,
     "source": [
-      "### Weak skew"
+      "### 弱いスキュー"
     ]
   },
   {
     "index": 13,
     "source": [
-      "### Strong skew\n",
-      "Under strong skew, the position is more limited compared to the weak skew case. You may also observe a spike in equity when the market moves sharply. However, in reality, this might not be realized due to order latency. Later, we will explore the impact of order latency and highlight the importance of using actual historical order latency data."
+      "### 強いスキュー\n",
+      "強いスキューの下では、ポジションは弱いスキューの場合と比較してより制限されます。市場が急激に動くと、エクイティのスパイクが観察されることもあります。ただし、実際には注文レイテンシのためにこれが実現しない可能性があります。後で、注文レイテンシの影響を探り、実際の履歴注文レイテンシデータを使用する重要性を強調します。"
     ]
   },
   {
     "index": 16,
     "source": [
-      "## Multiple Assets\n",
+      "## 複数の資産\n",
       "\n",
-      "You might need to find the proper parameters for each asset to achieve better performance. As an example, here it uses single parameters set to demonstrate how the performance of a combination of multiple assets will be."
+      "より良いパフォーマンスを達成するために、各資産に適したパラメータを見つける必要があるかもしれません。例として、ここでは単一のパラメータセットを使用して、複数の資産の組み合わせのパフォーマンスがどのようになるかを示します。"
     ]
   }
 ]

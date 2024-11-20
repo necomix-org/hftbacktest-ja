@@ -2,15 +2,15 @@
   {
     "index": 0,
     "source": [
-      "# Probability Queue Position Models\n",
+      "# 確率キュー位置モデル\n",
       "\n",
-      "## Overview\n",
+      "## 概要\n",
       "\n",
-      "Here, we will demonstrate how queue position models affect order fill simulation and, ultimately, the strategy's performance. It is essential for accurate backtesting to find the proper queue position modeling by comparing backtest and real trading results. In this context, we will illustrate comparisons by changing queue position models. By doing this, you can determine the appropriate queue position model that aligns with the backtesting and real trading results.\n",
+      "ここでは、キュー位置モデルが注文の充足シミュレーションにどのように影響し、最終的に戦略のパフォーマンスにどのように影響するかを示します。正確なバックテストを行うためには、バックテストと実際の取引結果を比較して適切なキュー位置モデルを見つけることが重要です。この文脈では、キュー位置モデルを変更することで比較を示します。これにより、バックテストと実際の取引結果が一致する適切なキュー位置モデルを特定できます。\n",
       "\n",
       "<div class=\"alert alert-info\">\n",
       "    \n",
-      "**Note:** This example is for educational purposes only and demonstrates effective strategies for high-frequency market-making schemes. All backtests are based on a 0.005% rebate, the highest market maker rebate available on Binance Futures. See <a href=\"https://www.binance.com/en/support/announcement/binance-upgrades-usd%E2%93%A2-margined-futures-liquidity-provider-program-2023-04-04-01007356e6514df3811b0c80ab8c83bf\">Binance Upgrades USDⓢ-Margined Futures Liquidity Provider Program</a> for more details.\n",
+      "**注:** この例は教育目的のみであり、高頻度マーケットメイキングスキームの効果的な戦略を示しています。すべてのバックテストは、Binance Futuresで利用可能な最高のマーケットメイカーリベートである0.005％のリベートに基づいています。詳細については、<a href=\"https://www.binance.com/en/support/announcement/binance-upgrades-usd%E2%93%A2-margined-futures-liquidity-provider-program-2023-04-04-01007356e6514df3811b0c80ab8c83bf\">Binance Upgrades USDⓢ-Margined Futures Liquidity Provider Program</a> を参照してください。\n",
       "    \n",
       "</div>"
     ]
