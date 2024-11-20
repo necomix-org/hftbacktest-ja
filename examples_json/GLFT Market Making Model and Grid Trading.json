@@ -1,0 +1,242 @@
+[
+  {
+    "index": 0,
+    "source": [
+      "# Guéant–Lehalle–Fernandez-Tapia Market Making Model and Grid Trading"
+    ]
+  },
+  {
+    "index": 1,
+    "source": [
+      "## Overview\n",
+      "\n",
+      "Grid trading is straightforward and easy to comprehend, and it excels in high-frequency environments. However, given the intricacies of high-frequency trading, which necessitate comprehensive tick-by-tick simulation with latencies and order fill simulation, optimizing the ideal spread, order interval, and skew can be a challenging task. Furthermore, these values fluctuate over time, especially in response to market conditions, making a fixed setup less than optimal.\n",
+      "\n",
+      "To improve grid trading's adaptability, one solution is to combine it with a well-developed market-making model. Let's delve into how this can be achieved."
+    ]
+  },
+  {
+    "index": 2,
+    "source": [
+      "## Guéant–Lehalle–Fernandez-Tapia Market Making Model\n",
+      "\n",
+      "This model represents an advanced evolution of the well-known Avellaneda-Stoikov model and provides a closed-form approximation of asymptotic behavior for terminal time T. Simply, this model does not specify a terminal time, which makes it suitable for typical stocks, spot assets, or crypto perpetual contracts. By employing this model, it is anticipated that the half spread and skew will be accurately adjusted according to market conditions.\n",
+      "\n",
+      "In this analysis, we will focus on equations (4.6) and (4.7) in [Optimal market making](https://arxiv.org/abs/1605.01862) and explore how they can be applied to real-world scenarios.\n",
+      "\n",
+      "The optimal bid quote depth, $\\delta^{b*}_{approx}$, and ask quote depth, $\\delta^{a*}_{approx}$, are derived from the fair price as follows:\n",
+      "\n",
+      "\\begin{align}\n",
+      "\\delta^{b*}_{approx}(q) = {1 \\over {\\xi \\Delta}}log(1 + {\\xi \\Delta \\over k}) + {{2q + \\Delta} \\over 2}\\sqrt{{{\\gamma \\sigma^2} \\over {2A\\Delta k}}(1 + {\\xi \\Delta \\over k})^{{k \\over {\\xi \\Delta}} + 1}} \\label{eq4.6}\\tag{4.6} \\\\\n",
+      "\\delta^{a*}_{approx}(q) = {1 \\over {\\xi \\Delta}}log(1 + {\\xi \\Delta \\over k}) - {{2q - \\Delta} \\over 2}\\sqrt{{{\\gamma \\sigma^2} \\over {2A\\Delta k}}(1 + {\\xi \\Delta \\over k})^{{k \\over {\\xi \\Delta}} + 1}} \\label{eq4.7}\\tag{4.7}\n",
+      "\\end{align}\n",
+      "\n",
+      "Let's introduce $c_1$ and $c_2$ and define them by extracting the volatility 𝜎 from the square root:\n",
+      "\n",
+      "\\begin{align}\n",
+      "c_1 = {1 \\over {\\xi \\Delta}}log(1 + {\\xi \\Delta \\over k}) \\\\\n",
+      "c_2 = \\sqrt{{\\gamma \\over {2A\\Delta k}}(1 + {\\xi \\Delta \\over k})^{{k \\over {\\xi \\Delta}} + 1}}\n",
+      "\\end{align}\n",
+      "\n",
+      "Now we can rewrite equations (4.6) and (4.7) as follows:\n",
+      "\n",
+      "\\begin{align}\n",
+      "\\delta^{b*}_{approx}(q) = c_1 + {\\Delta \\over 2} \\sigma c_2 + q \\sigma c_2 \\\\\n",
+      "\\delta^{a*}_{approx}(q) = c_1 + {\\Delta \\over 2} \\sigma c_2 - q \\sigma c_2\n",
+      "\\end{align}\n",
+      "\n",
+      "As you can see, this consists of the half spread and skew. $q$ represents a market maker's inventory(position).\n",
+      "\n",
+      "\\begin{align}\n",
+      "\\text{half spread} = C_1 + {\\Delta \\over 2} \\sigma C_2 \\\\\n",
+      "\\text{skew} = \\sigma C_2 \\\\\n",
+      "\\delta^{b*}_{approx}(q) = \\text{half spread} + \\text{skew} \\times q \\\\\n",
+      "\\delta^{a*}_{approx}(q) = \\text{half spread} - \\text{skew} \\times q\n",
+      "\\end{align}\n",
+      "\n",
+      "Thus,\n",
+      "\n",
+      "\\begin{align}\n",
+      "\\text{bid price} = \\text{fair price} - (\\text{half spread} + \\text{skew} \\times q) \\\\\n",
+      "\\text{ask price} = \\text{fair price} + (\\text{half spread} - \\text{skew} \\times q)\n",
+      "\\end{align}\n",
+      "\n",
+      "You can find similarities in what the following two articles describe.  \n",
+      "[Stochastic Control Theory and High Frequency Trading](https://ieor.columbia.edu/files/seasdepts/industrial-engineering-operations-research/pdf-files/Borden_D_FESeminar_Sp10.pdf)  \n",
+      "[How to Market Make Bitcoin Derivatives Lesson 2](https://blog.bitmex.com/how-to-market-make-bitcoin-derivatives-lesson-2/)  "
+    ]
+  },
+  {
+    "index": 3,
+    "source": [
+      "## Calculating Trading Intensity\n",
+      "\n",
+      "To determine the optimal quotes, we need to compute $c_1$ and $c_2$. In order to do that, we need to calibrate $A$ and $k$ of trading intensity, as well as calculate the market volatility $\\sigma$.\n",
+      "\n",
+      "Trading intensity is defined as:\n",
+      "\n",
+      "$$ \\lambda = A \\exp (-k \\delta) $$\n",
+      "\n",
+      "We will calibrate these values using market data according to [the this article](https://quant.stackexchange.com/questions/36073/how-does-one-calibrate-lambda-in-a-avellaneda-stoikov-market-making-problem). In order to do that, we need to record market order's arrivals.\n",
+      "\n",
+      "Our market maker will react every 100ms, which means they will post or cancel orders at this interval. So, our quotes' trading intensity will be measured in the same time-step. Ideally, we should also account for our orders' queue position; however, to simplify the problem, we will not consider the order queue position in this analysis."
+    ]
+  },
+  {
+    "index": 5,
+    "source": [
+      "Since we're not considering the order's queue position when measuring trading intensity, only market trades that cross our quote will be counted as executed."
+    ]
+  },
+  {
+    "index": 7,
+    "source": [
+      "Run HftBacktest to replay the market and record order arrival depth and price changes."
+    ]
+  },
+  {
+    "index": 9,
+    "source": [
+      "Measure trading intensity from the recorded order arrival depth and plot it."
+    ]
+  },
+  {
+    "index": 12,
+    "source": [
+      "Calibrate $A$ and $k$ using linear regression, since by taking the logarithm of both sides of lambda, it becomes $log \\lambda = -k \\delta + logA$."
+    ]
+  },
+  {
+    "index": 16,
+    "source": [
+      "As you can see, the fitted lambda function is not accurate across the entire range. More specifically, it overestimates the trading intensity for the shallow range near the mid-price and underestimates it for the deep range away from the mid-price.\n",
+      "\n",
+      "Since our quotes are likely to be placed in the range close to the mid-price, at least under typical market conditions (excluding high volatility conditions), we will refit the function specifically for the nearest range."
+    ]
+  },
+  {
+    "index": 19,
+    "source": [
+      "Now, we have a more accurate trading intensity function. Let's see where our quote will be placed.\n",
+      "\n",
+      "But before we do that, let's calculate the volatility first."
+    ]
+  },
+  {
+    "index": 21,
+    "source": [
+      "Compute $c_1$ and $c_2$ according to the equations."
+    ]
+  },
+  {
+    "index": 23,
+    "source": [
+      "In the Guéant–Lehalle–Fernandez-Tapia formula, $\\Delta = 1$ and $\\xi = \\gamma$. the value of $\\gamma$ is arbitrarily chosen."
+    ]
+  },
+  {
+    "index": 25,
+    "source": [
+      "What does it mean when your quote is positioned 20 ticks away from the mid-price? By analyzing the recorded order arrival depth, you can identify the number of market trades you'll participate in as a market maker, measured in terms of count instead of volume. Additionally, the skew appears to be quite strong, as accumulating just two positions offsets the entire half spread."
+    ]
+  },
+  {
+    "index": 27,
+    "source": [
+      "Approximately 1.86% of market trades per given time-step could execute your quote. Be aware that it's not the percentage of the traded quantity."
+    ]
+  },
+  {
+    "index": 28,
+    "source": [
+      "## Implement a Market Maker using the Model\n",
+      "\n",
+      "\n",
+      "<div class=\"alert alert-info\">\n",
+      "    \n",
+      "**Note:** This example is for educational purposes only and demonstrates effective strategies for high-frequency market-making schemes. All backtests are based on a 0.005% rebate, the highest market maker rebate available on Binance Futures. See <a href=\"https://www.binance.com/en/support/announcement/binance-updates-usd%E2%93%A2-margined-futures-liquidity-provider-program-2024-06-03-fefc6aa25e0947e2bf745c1c56bea13e\">Binance Upgrades USDⓢ-Margined Futures Liquidity Provider Program</a> for more details.\n",
+      "    \n",
+      "</div>\n",
+      "\n",
+      "In this example, we will disregard the forecast term and assume that the fair price is equal to the mid price, as we can expect the intrinsic value to remain stable in the short term."
+    ]
+  },
+  {
+    "index": 33,
+    "source": [
+      "## Adjustment factors\n",
+      "\n",
+      "It looks like the skew is too strong, which is why the market maker is hesitant to take on the position. To alleviate the skew, you can introduce adjustment factors, $adj_1$ and $adj_2$, to the calculated half spread and skew, as follow.\n",
+      "\n",
+      "$$\n",
+      "\\text{half spread}_{adj} = \\text{half spread} \\times adj_1 \\\\\n",
+      "\\text{skew}_{adj} = \\text{skew} \\times adj_2\n",
+      "$$"
+    ]
+  },
+  {
+    "index": 37,
+    "source": [
+      "Improved, but even when accounting for rebates, it can only achieve breakeven at best. As shown below, both the half spread and skew move together, primarily influenced by the $c_2$ and the market volatility."
+    ]
+  },
+  {
+    "index": 40,
+    "source": [
+      "In the 5-day backtest, it's evident that profits are generated through rebates, as a result of maintaining high trading volume by consistently posting quotes."
+    ]
+  },
+  {
+    "index": 43,
+    "source": [
+      "## Integrating Grid Trading\n",
+      "\n",
+      "Creating a grid from the bid and ask prices derived from the Guéant–Lehalle–Fernandez-Tapia market making model."
+    ]
+  },
+  {
+    "index": 47,
+    "source": [
+      "You can see it works even better with other coins as well. In the next example, we will show how to create multiple markets to achieve better risk-adjusted returns."
+    ]
+  },
+  {
+    "index": 50,
+    "source": [
+      "## Wrapping up\n",
+      "\n",
+      "Thus far, we have illustrated how to apply the model to a real-world example.\n",
+      "\n",
+      "For a more effective market-making algorithm, consider dividing this model into the following categories:\n",
+      "\n",
+      "* Half-spread: As shown, the half-spread is a function of trading intensity and market volatility. An exponential function used for trading intensity might not be suitable for the entire range. You could develop a more refined approach to convert trading intensity to half-spread. Additionally, while historical trading intensity and market volatility are utilized here, you could forecast short-term trading intensity and volatility to respond more agilely to changes in market conditions. This might involve strategies that use news, events, liquidity vacuums, and other factors to predict volatility explosions.\n",
+      "\n",
+      "\n",
+      "* Skew: The skew is also a function of trading intensity and market volatility. In this model, only inventory risk is considered, but you can also account for other risks, particularly when making multiple markets. BARRA is a good example of other risks that can be managed similarly.\n",
+      "\n",
+      "\n",
+      "* Fair Value Pricing: In this model, the fair price is equal to the mid-price, however, you need to incorporate forecasts such as the micro-price and fair value pricing through correlated assets to enhance the strategy.\n",
+      "\n",
+      "\n",
+      "* Hedging: Hedging is especially crucial when making multiple markets, as it serves as a valuable tool for managing risks.\n",
+      "\n",
+      "We will address a few more topics in upcoming examples."
+    ]
+  },
+  {
+    "index": 51,
+    "source": [
+      "## References\n",
+      "[Dealing with the Inventory Risk - A solution to the market making problem](https://arxiv.org/abs/1105.3115)  \n",
+      "[Optimal market making](https://arxiv.org/abs/1605.01862)  \n",
+      "\n",
+      "Knight Capital Group  \n",
+      "[Stochastic Control Theory and High Frequency Trading](https://ieor.columbia.edu/files/seasdepts/industrial-engineering-operations-research/pdf-files/Borden_D_FESeminar_Sp10.pdf)  \n",
+      "\n",
+      "BitMEX Market Making Series  \n",
+      "[Algo Trading & Market Making](https://blog.bitmex.com/wp-content/uploads/2019/11/Algo-Trading-and-Market-Making.pdf)  \n",
+      "[How to Market Make Bitcoin Derivatives Lesson 1](https://blog.bitmex.com/how-to-market-make-bitcoin-derivatives-lesson-1/)  \n",
+      "[How to Market Make Bitcoin Derivatives Lesson 2](https://blog.bitmex.com/how-to-market-make-bitcoin-derivatives-lesson-2/)  "
+    ]
+  }
+]

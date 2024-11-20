@@ -1,0 +1,28 @@
+[
+  {
+    "index": 0,
+    "source": [
+      "# Making Multiple Markets - Introduction\n",
+      "\n",
+      "One of the core concepts of quantitative trading is to create a portfolio by combining multiple assets or strategies to diversify risks. By combining multiple strategies, you can obtain a less volatile portfolio return. In other words, you can achieve a higher Sharpe ratio by combining multiple assets or strategies. Even if your individual strategy's Sharpe ratio is low, constructing a portfolio with multiple assets or strategies can result in a higher Sharpe ratio for the combined portfolio. You can see how this works with the following straightforward example, without complex mathematics."
+    ]
+  },
+  {
+    "index": 2,
+    "source": [
+      "Here, it creates a series of random returns with a low target Sharpe ratio. In the following graphs, it is difficult to determine if the individual strategy is effective."
+    ]
+  },
+  {
+    "index": 5,
+    "source": [
+      "However, by combining multiple individual assets or strategies into a portfolio and plotting the portfolio's equity curve and Sharpe ratio, you can observe a higher Sharpe ratio and a more linear equity curve as you combine more. The more assets or strategies are combined, the higher the Sharpe ratio becomes."
+    ]
+  },
+  {
+    "index": 8,
+    "source": [
+      "One important factor to consider is **the correlation** of returns between assets or strategies. The higher the correlation, the less effective the portfolio will be."
+    ]
+  }
+]

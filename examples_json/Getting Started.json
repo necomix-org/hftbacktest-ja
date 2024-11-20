@@ -1,0 +1,140 @@
+[
+  {
+    "index": 0,
+    "source": [
+      "# Getting Started"
+    ]
+  },
+  {
+    "index": 1,
+    "source": [
+      "## Printing the best bid and the best ask"
+    ]
+  },
+  {
+    "index": 4,
+    "source": [
+      "You can see the best bid and best ask every 60 seconds. Since the price is a 32-bit float, there may be floating-point errors. Be careful when using it. In the example, for readability, the price is rounded based on the tick size."
+    ]
+  },
+  {
+    "index": 6,
+    "source": [
+      "HftBacktest cannot be reused. Therefore, after using the backtest, make sure to close it. If you use the backtest after closing, it will crash."
+    ]
+  },
+  {
+    "index": 8,
+    "source": [
+      "## Feeding the data"
+    ]
+  },
+  {
+    "index": 9,
+    "source": [
+      "When you possess adequate memory, preloading the data into memory and providing it as input will be more efficient than lazy-loading during repeated backtesting."
+    ]
+  },
+  {
+    "index": 12,
+    "source": [
+      "## Getting the market depth"
+    ]
+  },
+  {
+    "index": 15,
+    "source": [
+      "## Submitting an order"
+    ]
+  },
+  {
+    "index": 18,
+    "source": [
+      "## Clearing inactive orders (FILLED, CANCELED, EXPIRED)"
+    ]
+  },
+  {
+    "index": 21,
+    "source": [
+      "## Watching a order status - pending due to order latency"
+    ]
+  },
+  {
+    "index": 23,
+    "source": [
+      "The `order_status` is `None` until the acceptance message is received."
+    ]
+  },
+  {
+    "index": 25,
+    "source": [
+      "## Waiting for an order response"
+    ]
+  },
+  {
+    "index": 27,
+    "source": [
+      "Since the `ConstantLatency` model is used, the round-trip latency is exactly 200ms. Ideally, using historical order latency data collected from the live market is the best approach. However, if this data is not available, starting with artificially generated order latency based on feed latency is another option. We will explore this in the following examples."
+    ]
+  },
+  {
+    "index": 29,
+    "source": [
+      "## Printing position, balance, fee, and equity"
+    ]
+  },
+  {
+    "index": 32,
+    "source": [
+      "## Canceling an open order"
+    ]
+  },
+  {
+    "index": 35,
+    "source": [
+      "## Market order"
+    ]
+  },
+  {
+    "index": 38,
+    "source": [
+      "## GTX, Post-Only order"
+    ]
+  },
+  {
+    "index": 41,
+    "source": [
+      "## Plotting BBO"
+    ]
+  },
+  {
+    "index": 44,
+    "source": [
+      "## Printing stats"
+    ]
+  },
+  {
+    "index": 47,
+    "source": [
+      "You can get recorded states using the `get` method with the asset number."
+    ]
+  },
+  {
+    "index": 49,
+    "source": [
+      "Additionally, the `to_npz` method saves all records into an npz file, with the asset number as the key for the data."
+    ]
+  },
+  {
+    "index": 51,
+    "source": [
+      "HftBacktest also provides a performance reporting tool based on the records. Please see the details here."
+    ]
+  },
+  {
+    "index": 54,
+    "source": [
+      "Bokeh using Holoviews is also supported."
+    ]
+  }
+]

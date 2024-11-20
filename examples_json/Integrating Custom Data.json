@@ -1,0 +1,38 @@
+[
+  {
+    "index": 0,
+    "source": [
+      "# Integrating Custom Data\n",
+      "\n",
+      "By combining your custom data with the feed data (order book and trades), you can enhance your strategy while harnessing the full potential of hftbacktest."
+    ]
+  },
+  {
+    "index": 1,
+    "source": [
+      "## Accessing Spot Price\n",
+      "\n",
+      "In this example, we'll combine the spot BTCUSDT mid-price with the USDM-Futures BTCUSDT feed data. This will enable you to estimate the fair value price, taking the underlying price into consideration.\n",
+      "\n",
+      "The spot data is used only in the local-side, and thus, should come with a local timestamp. Following this, in your backtesting logic, your task is to identify the most recent data that predates the current timestamp."
+    ]
+  },
+  {
+    "index": 2,
+    "source": [
+      "The raw spot feed is processed to create spot data, which includes both a local timestamp and the spot mid price."
+    ]
+  },
+  {
+    "index": 4,
+    "source": [
+      "It displays the basis and spot mid price as it identifies the latest Point-in-Time data that falls before the current timestamp."
+    ]
+  },
+  {
+    "index": 7,
+    "source": [
+      "Although this is a short-period sample, you can observe that the basis is mean-reverting. There may be statistical arbitrage opportunities, particularly if you are eligible for rebates or zero fees."
+    ]
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "index": 0,
+    "source": [
+      "# Impact of Order Latency\n",
+      "\n",
+      "This example illustrates the impact of order latency on the performance of the strategy.\n",
+      "\n",
+      "<div class=\"alert alert-info\">\n",
+      "    \n",
+      "**Note:** This example is for educational purposes only and demonstrates effective strategies for high-frequency market-making schemes. All backtests are based on a 0.005% rebate, the highest market maker rebate available on Binance Futures. See <a href=\"https://www.binance.com/en/support/announcement/binance-updates-usd%E2%93%A2-margined-futures-liquidity-provider-program-2024-06-03-fefc6aa25e0947e2bf745c1c56bea13e\">Binance Upgrades USDⓢ-Margined Futures Liquidity Provider Program</a> for more details.\n",
+      "    \n",
+      "</div>"
+    ]
+  },
+  {
+    "index": 2,
+    "source": [
+      "## Order Latency from Feed Latency\n",
+      "\n",
+      "Please see [the tutorial](https://hftbacktest.readthedocs.io/en/latest/tutorials/Order%20Latency%20Data.html) on generating artificial order latency data from feed latency."
+    ]
+  },
+  {
+    "index": 5,
+    "source": [
+      "## Live Order Latency"
+    ]
+  },
+  {
+    "index": 8,
+    "source": [
+      "## Order Latency from Amplified Feed Latency\n",
+      "\n",
+      "Order entry latency is 4 times the feed latency and order response latency is 3 times the feed latency."
+    ]
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "index": 0,
+    "source": [
+      "# Order Latency Data\n",
+      "\n",
+      "To obtain more realistic backtesting results, accounting for latencies is crucial. Therefore, it's important to collect both feed data and order data with timestamps to measure your order latency. The best approach is to gather your own order latencies. You can collect order latency based on your live trading or by regularly submitting orders at a price that cannot be filled and then canceling them for recording purposes. However, if you don't have access to them or want to establish a target, you will need to artificially generate order latency. You can model this latency based on factors such as feed latency, trade volume, and the number of events. In this guide, we will demonstrate a simple method to generate order latency from feed latency using a multiplier and offset for adjustment."
+    ]
+  },
+  {
+    "index": 1,
+    "source": [
+      "First, loads the feed data."
+    ]
+  },
+  {
+    "index": 3,
+    "source": [
+      "For easy manipulation, converts it into a DataFrame."
+    ]
+  },
+  {
+    "index": 5,
+    "source": [
+      "Selects only the events that have both a valid exchange timestamp and a valid local timestamp to get feed latency."
+    ]
+  },
+  {
+    "index": 7,
+    "source": [
+      "Reduces the number of rows by resampling to approximately 1-second intervals."
+    ]
+  },
+  {
+    "index": 9,
+    "source": [
+      "Converts back to the structured NumPy array."
+    ]
+  },
+  {
+    "index": 11,
+    "source": [
+      "Generates order latency. Order latency consists of two components: the latency until the order request reaches the exchange's matching engine and the latency until the response arrives backto the localy. Order latency is not the same as feed latency and does not need to be proportional to feed latency. However, for simplicity, we model order latency to be proportional to feed latency using a multiplier and offset."
+    ]
+  },
+  {
+    "index": 14,
+    "source": [
+      "Checks if latency has invalid negative values."
+    ]
+  },
+  {
+    "index": 18,
+    "source": [
+      "Here, we wrap the entire process into a method with `njit` for increased speed."
+    ]
+  }
+]

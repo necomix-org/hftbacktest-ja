@@ -1,0 +1,117 @@
+[
+  {
+    "index": 0,
+    "source": [
+      "# Making Multiple Markets\n",
+      "\n",
+      "## Overview\n",
+      "\n",
+      "By diversifying your assets and constructing a market-making book, you can achieve improved risk-adjusted returns through the effects of diversification. In this example, we will demonstrate how the statistics of your market-making portfolio change as you increase the number of assets for which you create markets.\n",
+      "\n",
+      "To implement Grid Trading using the GLFT market-making model across multiple assets universally without needing to adjust parameters, a few modifications are required:\n",
+      "\n",
+      "Order quantities vary between assets due to differences in price, trading volume, and liquidity in the order book. To backtest all at once, you need to normalize your order quantities and make adjustments accordingly.\n",
+      "\n",
+      "In certain assets, market trades primarily take place at the best bid and offer levels. Since we only calculate our trading intensity when market trades match our quotes, you may not achieve adequate trading intensity to suit your trading intensity function in such cases. As a result, you'll need to explore alternative methods to determine your half spread and skew based on order arrival depths or you need to increase your reaction interval to get more deeper order arrival depth but it leads you to react delayed especially in a fast-moving market.\n",
+      "\n",
+      "See how $adj_2$ is determined to normalize different order quantities.\n",
+      "\n",
+      "<div class=\"alert alert-info\">\n",
+      "    \n",
+      "**Note:** This example is for educational purposes only and demonstrates effective strategies for high-frequency market-making schemes. All backtests are based on a 0.005% rebate, the highest market maker rebate available on Binance Futures. See <a href=\"https://www.binance.com/en/support/announcement/binance-updates-usd%E2%93%A2-margined-futures-liquidity-provider-program-2024-06-03-fefc6aa25e0947e2bf745c1c56bea13e\">Binance Upgrades USDⓢ-Margined Futures Liquidity Provider Program</a> for more details.\n",
+      "    \n",
+      "</div>"
+    ]
+  },
+  {
+    "index": 2,
+    "source": [
+      "The order quantity is determined to be equivalent to a notional value of $100."
+    ]
+  },
+  {
+    "index": 4,
+    "source": [
+      "By utilizing multiprocessing, backtesting of multiple assets can be conducted simultaneously."
+    ]
+  },
+  {
+    "index": 7,
+    "source": [
+      "You can see the equity curve of individual assets and notice how combining multiple assets can lead to a smoother equity curve, thereby enhancing risk-adjusted returns."
+    ]
+  },
+  {
+    "index": 9,
+    "source": [
+      "This presents an equity curve based on the number of assets, which are altcoins excluding BTC and ETH."
+    ]
+  },
+  {
+    "index": 11,
+    "source": [
+      "## Impact of Order Latency\n",
+      "\n",
+      "When applying amplified feed latency, you can observe a decrease in performance due to the effects of latency."
+    ]
+  },
+  {
+    "index": 15,
+    "source": [
+      "When actual historical order latency is applied, the performance may deteriorate further compared to when amplified feed latency is used."
+    ]
+  },
+  {
+    "index": 19,
+    "source": [
+      "Therefore, understanding your order latency is crucial to achieving more precise backtest results. This understanding underscores the importance of latency reduction for market makers or high-frequency traders. This is why crypto exchanges not only offer maker rebates but also provide low-latency infrastructure to eligible market makers."
+    ]
+  },
+  {
+    "index": 20,
+    "source": [
+      "## Simpler model\n",
+      "\n",
+      "So far, we only cover $\\xi>0$ case, but $\\xi=0$ case would be more simple and appropriate in practice especially in cryptocurrencies.\n",
+      "\n",
+      "Revisit the equations (4.6) and (4.7) in [Optimal market making](https://arxiv.org/abs/1605.01862) and explore how they can be applied to real-world scenarios.\n",
+      "\n",
+      "The optimal bid quote depth, $\\delta^{b*}_{approx}$, and ask quote depth, $\\delta^{a*}_{approx}$, are derived from the fair price as follows in the case of $\\xi=0$:\n",
+      "\n",
+      "\\begin{align}\n",
+      "\\delta^{b*}_{approx}(q) = {1 \\over k} + {{2q + \\Delta} \\over 2}\\sqrt{{{\\gamma \\sigma^2 e} \\over {2A\\Delta k}}} \\label{eq4.6}\\tag{4.6} \\\\\n",
+      "\\delta^{a*}_{approx}(q) = {1 \\over k} - {{2q - \\Delta} \\over 2}\\sqrt{{{\\gamma \\sigma^2 e} \\over {2A\\Delta k}}} \\label{eq4.7}\\tag{4.7}\n",
+      "\\end{align}\n",
+      "\n",
+      "Let's introduce $c_1$ and $c_2$ and define them by extracting the volatility 𝜎 from the square root as same as before:\n",
+      "\n",
+      "\\begin{align}\n",
+      "c_1 = {1 \\over k} \\\\\n",
+      "c_2 = \\sqrt{{{\\gamma e} \\over {2A\\Delta k}}}\n",
+      "\\end{align}\n",
+      "\n",
+      "Now we can rewrite equations (4.6) and (4.7) as follows:\n",
+      "\n",
+      "\\begin{align}\n",
+      "\\delta^{b*}_{approx}(q) = c_1 + {\\Delta \\over 2} \\sigma c_2 + q \\sigma c_2 \\\\\n",
+      "\\delta^{a*}_{approx}(q) = c_1 + {\\Delta \\over 2} \\sigma c_2 - q \\sigma c_2\n",
+      "\\end{align}\n",
+      "\n",
+      "It's more concise and only need to adjust $\\gamma$ and its effect is more straightforward."
+    ]
+  },
+  {
+    "index": 27,
+    "source": [
+      "You can observe a more straight line in the equity curve with higher $\\gamma$, which induces greater skew. However, it also experiences more severe drawdowns in fast-moving markets. Additionally, because of the higher skew, profits are diminished as there's a greater tendency to close the position."
+    ]
+  },
+  {
+    "index": 29,
+    "source": [
+      "## A Case for More Assets\n",
+      "\n",
+      "The more assets you make a market for, the better risk-adjusted return you achieve. This effect becomes dramatically evident."
+    ]
+  }
+]

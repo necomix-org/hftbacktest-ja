@@ -1,0 +1,68 @@
+[
+  {
+    "index": 0,
+    "source": [
+      "# Queue-Based Market Making in Large Tick Size Assets\n",
+      "\n",
+      "## Overview\n",
+      "The significance of queue position is well-known in microstructure trading, particularly in assets with large tick sizes. This is because larger tick assets typically more constrained price movements. The impact of tick size is discussed in detail in [\"Large tick assets: implicit spread and optimal tick size\"](https://arxiv.org/pdf/1207.6325).\n",
+      "\n",
+      "![CRVUSDT_chart](https://github.com/nkaz001/hftbacktest/blob/master/docs/images/CRVUSDT_chart.png)\n",
+      "\n",
+      "<div class=\"alert alert-info\">\n",
+      "    \n",
+      "**Note:** This example is for educational purposes only and demonstrates effective strategies for high-frequency market-making schemes. All backtests are based on a 0.005% rebate, the highest market maker rebate available on Binance Futures. See <a href=\"https://www.binance.com/en/support/announcement/binance-updates-usd%E2%93%A2-margined-futures-liquidity-provider-program-2024-06-03-fefc6aa25e0947e2bf745c1c56bea13e\">Binance Upgrades USDⓢ-Margined Futures Liquidity Provider Program</a> for more details.\n",
+      "    \n",
+      "</div>\n",
+      "\n",
+      "## Book Pressure\n",
+      "To begin, we will review the [Market Microstructure signals described in this article](https://blog.headlandstech.com/2017/08/), which are similar to the concept of micro-price. Book imbalance is also addressed in [Market Making with Alpha - Order Book Imbalance](https://github.com/nkaz001/hftbacktest/blob/master/examples/Market%20Making%20with%20Alpha%20-%20Order%20Book%20Imbalance.ipynb)."
+    ]
+  },
+  {
+    "index": 6,
+    "source": [
+      "## Trade Impulse\n",
+      "\n",
+      "Let's examine how it changes when we incorporate the trade impulse."
+    ]
+  },
+  {
+    "index": 12,
+    "source": [
+      "There is not much difference, as the last trade quantity is relatively small compared to the best bid and offer quantities.\n",
+      "\n",
+      "![CRVUSDT_depth](https://github.com/nkaz001/hftbacktest/blob/master/docs/images/CRVUSDT_depth.png)\n",
+      "\n",
+      "The following example demonstrates a variant of trade impulse using aggregated trade quantities."
+    ]
+  },
+  {
+    "index": 18,
+    "source": [
+      "You can also adjust `trade_impulse_adj` to modify the impact of the trade impulse. Alternatively, you can explore other ways to compute the trade impulse, such as `(best_bid * best_ask_qty + best_ask * best_bid_qty + last_px * last_qty) / (best_bid_qty + best_ask_qty + last_qty)`, VWAP, etc."
+    ]
+  },
+  {
+    "index": 19,
+    "source": [
+      "## Pure Queue-Based Model\n",
+      "\n",
+      "One possible reason for this strategy's profitability is the limited price movement due to the large tick size. For instance, CRVUSDT has a tick size of 38 basis points (0.001 / 0.26 * 10,000), which is comparatively very larger than BTCUSDT, where the tick size is approximately 0.018 basis points (0.1 / 54,000 * 10,000).\n",
+      "\n",
+      "This also highlights the importance of queue position modeling in fill simulations for assets with large tick sizes.\n",
+      "\n",
+      "In the CRVUSDT charts shown above, observing the trading activities, you can see that most trades occur at the best bid and ask prices, with little change in the overall price level.\n",
+      "\n",
+      "This suggests an opportunity to adjust the microstructure signal into a purely queue-based signal. For example, if there is sufficient quantity to maintain the price level, preventing it from moving adversely, we can choose to maintain our quote. Let’s explore how this can be implemented in a simplified form."
+    ]
+  },
+  {
+    "index": 25,
+    "source": [
+      "You can also explore more sophisticated approaches, such as dynamically controlling the `qty_threshold` and integrating it with the skew value, for example, `qty_threshold * (1 ± skew_val)`, similar to how skew is applied to the price. In other words, in the previous example, the spread is set in terms of price, but you can set the spread in terms of queue such as the queue position, the queue behind the order, the total queue, etc.\n",
+      "\n",
+      "Additionally, instead of reacting at fixed intervals, it may be more effective to respond to each incoming feed. This allows for faster reactions when the quantity at the BBO decreases rapidly, helping to avoid adverse selection. You can test this approach using the `wait_next_feed` method."
+    ]
+  }
+]

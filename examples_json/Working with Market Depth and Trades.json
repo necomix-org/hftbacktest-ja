@@ -1,0 +1,40 @@
+[
+  {
+    "index": 0,
+    "source": [
+      "# Working with Market Depth and Trades"
+    ]
+  },
+  {
+    "index": 1,
+    "source": [
+      "## Display 3-depth"
+    ]
+  },
+  {
+    "index": 5,
+    "source": [
+      "## Efficient Market Depth Access\n",
+      "\n",
+      "`ROIVectorMarketDepth` provides more efficient market depth access through a vector that holds a limited price range of interest. The backtester using this feature can be created by `ROIVectorMarketDepthBacktest`."
+    ]
+  },
+  {
+    "index": 9,
+    "source": [
+      "## Order Book Imbalance"
+    ]
+  },
+  {
+    "index": 14,
+    "source": [
+      "## Display last trades between the step"
+    ]
+  },
+  {
+    "index": 17,
+    "source": [
+      "## Rolling Volume-Weighted Average Price"
+    ]
+  }
+]

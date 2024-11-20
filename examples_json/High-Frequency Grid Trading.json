@@ -1,0 +1,57 @@
+[
+  {
+    "index": 0,
+    "source": [
+      "# High-Frequency Grid Trading\n",
+      "\n",
+      "<div class=\"alert alert-info\">\n",
+      "    \n",
+      "**Note:** This example is for educational purposes only and demonstrates effective strategies for high-frequency market-making schemes. All backtests are based on a 0.005% rebate, the highest market maker rebate available on Binance Futures. See <a href=\"https://www.binance.com/en/support/announcement/binance-updates-usd%E2%93%A2-margined-futures-liquidity-provider-program-2024-06-03-fefc6aa25e0947e2bf745c1c56bea13e\">Binance Upgrades USDⓢ-Margined Futures Liquidity Provider Program</a> for more details.\n",
+      "    \n",
+      "</div>"
+    ]
+  },
+  {
+    "index": 1,
+    "source": [
+      "## Plain High-Frequency Grid Trading\n",
+      "\n",
+      "This is a high-frequency version of Grid Trading that keeps posting orders on grids centered around the mid-price, maintaining a fixed interval and a set number of grids."
+    ]
+  },
+  {
+    "index": 3,
+    "source": [
+      "For generating order latency from the feed data file, which uses feed latency as order latency, please see [Order Latency Data](https://hftbacktest.readthedocs.io/en/latest/tutorials/Order%20Latency%20Data.html)."
+    ]
+  },
+  {
+    "index": 8,
+    "source": [
+      "## High-Frequency Grid Trading with Skewing\n",
+      "\n",
+      "By incorporating position-based skewing, the strategy's risk-adjusted returns can be improved."
+    ]
+  },
+  {
+    "index": 10,
+    "source": [
+      "### Weak skew"
+    ]
+  },
+  {
+    "index": 13,
+    "source": [
+      "### Strong skew\n",
+      "Under strong skew, the position is more limited compared to the weak skew case. You may also observe a spike in equity when the market moves sharply. However, in reality, this might not be realized due to order latency. Later, we will explore the impact of order latency and highlight the importance of using actual historical order latency data."
+    ]
+  },
+  {
+    "index": 16,
+    "source": [
+      "## Multiple Assets\n",
+      "\n",
+      "You might need to find the proper parameters for each asset to achieve better performance. As an example, here it uses single parameters set to demonstrate how the performance of a combination of multiple assets will be."
+    ]
+  }
+]

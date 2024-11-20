@@ -1,0 +1,104 @@
+[
+  {
+    "index": 0,
+    "source": [
+      "# Data Preparation"
+    ]
+  },
+  {
+    "index": 1,
+    "source": [
+      "To fully utilize the power of HftBacktest, it requires to input Tick-by-Tick full order book and trade feed data. Unfortunately, free Tick-by-Tick full order book and trade feed data for HFT is not available unlike daily bar data provided by platforms like Yahoo Finance. However, in the case of cryptocurrency, you can collect the full raw feed yourself."
+    ]
+  },
+  {
+    "index": 2,
+    "source": [
+      "## Getting started from Binance Futures' raw feed data\n",
+      "\n",
+      "You can collect Binance Futures feed yourself using [Data Collector](https://github.com/nkaz001/hftbacktest/tree/master/collector)."
+    ]
+  },
+  {
+    "index": 4,
+    "source": [
+      "The first token of the line is timestamp received by local.\n",
+      "\n",
+      "<div class=\"alert alert-info\">\n",
+      "    \n",
+      "**Note:** The timestamp is in nanoseconds.\n",
+      "    \n",
+      "</div>"
+    ]
+  },
+  {
+    "index": 5,
+    "source": [
+      "The data needs to be converted to normalized data that can be fed into HftBacktest.  \n",
+      "`convert` method also attempts to correct timestamps by reordering the rows."
+    ]
+  },
+  {
+    "index": 7,
+    "source": [
+      "Normalized data as follows. You can find more details on [Data](https://hftbacktest.readthedocs.io/en/latest/data.html)."
+    ]
+  },
+  {
+    "index": 9,
+    "source": [
+      "You can save the data directly to a file by providing `output_filename`."
+    ]
+  },
+  {
+    "index": 11,
+    "source": [
+      "## Creating a market depth snapshot"
+    ]
+  },
+  {
+    "index": 12,
+    "source": [
+      "As Binance Futures exchange runs 24/7, you need the initial snapshot to get the complete(almost) market depth.  \n",
+      "[Data Collector](https://github.com/nkaz001/hftbacktest/tree/master/collector) fetches the snapshot only when it makes the connection, so you need build the initial snapshot from the start of the collected feed data."
+    ]
+  },
+  {
+    "index": 14,
+    "source": [
+      "Bid levels are shown before ask levels in the snapshot, and levels are sorted from the best price to the farthest price."
+    ]
+  },
+  {
+    "index": 19,
+    "source": [
+      "## Getting started from Tardis.dev data\n",
+      "\n",
+      "Few vendors offer tick-by-tick full market depth data along with snapshot and trade data, and Tardis.dev is among them.\n",
+      "\n",
+      "<div class=\"alert alert-info\">\n",
+      "    \n",
+      "**Note:** Some data may have an issue with the exchange timestamp. Ideally, the exchange timestamp should reflect the moment the event occurs at the matching engine. However, some data uses the server's data sent timestamp instead of the matching engine timestamp.\n",
+      "\n",
+      "</div>"
+    ]
+  },
+  {
+    "index": 21,
+    "source": [
+      "It is recommended to input trade files before depth files. This is because if a depth event occurs due to a trade event, having the trade event before the depth event could provide a more realistic fill during backtesting. However, the sorting process will prioritize events from the first input file when both events have the same timestamp."
+    ]
+  },
+  {
+    "index": 24,
+    "source": [
+      "You can save the data directly to a file by providing `output_filename`. If there are too many rows, you need to increase `buffer_size`.  "
+    ]
+  },
+  {
+    "index": 26,
+    "source": [
+      "Tardis.dev artificially inserts the SOD snapshot to the start of the daily file. If you continuously backtest multiple days, you don't need the snapshot every start of days and it may incur more time to backtest. You can choose to include the Tardis.dev's SOD snapshot in the converted file using the option."
+    ]
+  }
+]
