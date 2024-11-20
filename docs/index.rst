@@ -7,59 +7,58 @@ HftBacktest
 
 |codeql| |python| |pypi| |downloads| |rustc| |crates| |license| |docs| |roadmap| |github|
 
-High-Frequency Trading Backtesting Tool
-=======================================
+高頻度取引バックテストツール
+==============================
 
-This framework is designed for developing high-frequency trading and market-making strategies. It focuses on accounting for both feed and order latencies, as well as the order queue position for order fill simulation. The framework aims to provide more accurate market replay-based backtesting, based on full order book and trade tick feed data.
+このフレームワークは、高頻度取引およびマーケットメイキング戦略の開発を目的としています。フィードおよび注文のレイテンシー、ならびに注文埋め合わせシミュレーションのための注文キュー位置を考慮することに重点を置いています。このフレームワークは、完全な注文書および取引ティックフィードデータに基づくより正確な市場リプレイベースのバックテストを提供することを目的としています。
 
-Key Features
-============
+主な機能
+========
 
-The experimental features are currently in the early stages of development, having been completely rewritten in Rust to
-support the following features.
+実験的な機能は現在開発の初期段階にあり、Rust で完全に書き直されて以下の機能をサポートしています。
 
-* Working in `Numba <https://numba.pydata.org/>`_ JIT function (Python).
-* Complete tick-by-tick simulation with a customizable time interval or based on the feed and order receipt.
-* Full order book reconstruction based on L2 Market-By-Price and L3 Market-By-Order feeds.
-* Backtest accounting for both feed and order latency, using provided models or your own custom model.
-* Order fill simulation that takes into account the order queue position, using provided models or your own custom model.
-* Backtesting of multi-asset and multi-exchange models
-* Deployment of a live trading bot using the same algorithm code: currently for Binance Futures and Bybit. (Rust-only)
+* `Numba <https://numba.pydata.org/>`_ JIT 関数 (Python) で動作します。
+* カスタマイズ可能な時間間隔またはフィードおよび注文の受信に基づく完全なティックバイティックシミュレーション。
+* L2 Market-By-Price および L3 Market-By-Order フィードに基づく完全な注文書の再構築。
+* 提供されたモデルまたは独自のカスタムモデルを使用して、フィードおよび注文のレイテンシーを考慮したバックテスト。
+* 提供されたモデルまたは独自のカスタムモデルを使用して、注文キュー位置を考慮した注文埋め合わせシミュレーション。
+* 複数資産および複数取引所モデルのバックテスト。
+* 同じアルゴリズムコードを使用してライブトレーディングボットを展開: 現在は Binance Futures および Bybit に対応。(Rust の��)
 
-Documentation
+ドキュメント
 =============
 
-See `full document here <https://hftbacktest.readthedocs.io/>`_.
+`こちら <https://hftbacktest.readthedocs.io/>`_ で完全なドキュメントを参照してください。
 
-Getting started
-===============
+始め方
+=======
 
-Installation
+インストール
 ------------
 
-hftbacktest supports Python 3.10+. You can install hftbacktest using ``pip``:
+hftbacktest は Python 3.10+ をサポートしています。``pip`` を使用して hftbacktest をインストールできます。
 
 .. code-block:: console
 
  pip install hftbacktest
 
-Or you can clone the latest development version from the Git repository with:
+または、Git リポジトリから最新の開発バージョンをクローンすることもできます。
 
 .. code-block:: console
 
  git clone https://github.com/nkaz001/hftbacktest
 
-Data Source & Format
+データソースとフォーマット
 --------------------
 
-Please see `Data <https://hftbacktest.readthedocs.io/en/latest/data.html>`_ or `Data Preparation <https://hftbacktest.readthedocs.io/en/latest/tutorials/Data%20Preparation.html>`_.
+`Data <https://hftbacktest.readthedocs.io/en/latest/data.html>`_ または `Data Preparation <https://hftbacktest.readthedocs.io/en/latest/tutorials/Data%20Preparation.html>`_ を参照してください。
 
-You can also find some data `here <https://reach.stratosphere.capital/data/usdm/>`_, hosted by the supporter.
+サポーターがホストしている `こちら <https://reach.stratosphere.capital/data/usdm/>`_ でもデータを見つけることができます。
 
-A Quick Example
----------------
+クイック例
+----------
 
-Get a glimpse of what backtesting with hftbacktest looks like with these code snippets:
+hftbacktest を使用したバックテストの様子を以下のコードスニペットでご覧ください。
 
 .. code-block:: python
 
@@ -115,7 +114,7 @@ Get a glimpse of what backtesting with hftbacktest looks like with these code sn
             update_bid = True
             update_ask = True
             buy_limit_exceeded = position * mid_price > max_notional_position
-            sell_limit_exceeded = position * mid_price < -max_notional_position
+            sell_limit_exceeded = position * mid価格 < -max_notional_position
             orders = hbt.orders(asset_no)
             order_values = orders.values()
             while order_values.has_next():
@@ -158,8 +157,8 @@ Get a glimpse of what backtesting with hftbacktest looks like with these code sn
         return True
 
 
-Tutorials
-=========
+チュートリアル
+=============
 * `Data Preparation <https://hftbacktest.readthedocs.io/en/latest/tutorials/Data%20Preparation.html>`_
 * `Getting Started <https://hftbacktest.readthedocs.io/en/latest/tutorials/Getting%20Started.html>`_
 * `Working with Market Depth and Trades <https://hftbacktest.readthedocs.io/en/latest/tutorials/Working%20with%20Market%20Depth%20and%20Trades.html>`_
@@ -175,38 +174,37 @@ Tutorials
 * `Market Making with Alpha - Order Book Imbalance <https://hftbacktest.readthedocs.io/en/latest/tutorials/Market%20Making%20with%20Alpha%20-%20Order%20Book%20Imbalance.html>`_
 * `Queue-Based Market Making in Large Tick Size Assets <https://hftbacktest.readthedocs.io/en/latest/tutorials/Queue-Based%20Market%20Making%20in%20Large%20Tick%20Size%20Assets.html>`_
 
-Examples
-========
+例
+==
 
-You can find more examples in `examples <https://github.com/nkaz001/hftbacktest/tree/master/examples>`_ directory and `Rust examples <https://github.com/nkaz001/hftbacktest/blob/master/hftbacktest/examples/>`_.
+`examples <https://github.com/nkaz001/hftbacktest/tree/master/examples>`_ ディレクトリおよび `Rust examples <https://github.com/nkaz001/hftbacktest/blob/master/hftbacktest/examples/>`_ でさらに多くの例を見つけることができます。
 
-The complete process of backtesting Binance Futures
----------------------------------------------------
-`high-frequency gridtrading <https://github.com/nkaz001/hftbacktest/blob/master/hftbacktest/examples/gridtrading.ipynb>`_: The complete process of backtesting Binance Futures using a high-frequency grid trading strategy implemented in Rust.
+Binance Futures のバックテストの完全なプロセス
+----------------------------------------------
+`high-frequency gridtrading <https://github.com/nkaz001/hftbacktest/blob/master/hftbacktest/examples/gridtrading.ipynb>`_: Rust で実装された高頻度グリッドトレーディング戦略を使用した Binance Futures のバックテストの完全なプロセス。
 
-Migration to V2
-===============
-Please see the `migration guide <https://hftbacktest.readthedocs.io/en/latest/migration2.html>`_.
+バージョン2への移行
+===================
+`migration guide <https://hftbacktest.readthedocs.io/en/latest/migration2.html>`_ を参照してください。
 
-Roadmap
-=======
+ロードマップ
+=========
 
-Currently, new features are being implemented in Rust due to the limitations of Numba, as performance is crucial given the size of the high-frequency data.
-The imminent task is to integrate hftbacktest in Python with hftbacktest in Rust by using the Rust implementation as the backend.
-Meanwhile, the data format, which is currently different, needs to be unified.
-On the pure Python side, the performance reporting tool should be improved to provide more performance metrics with increased speed.
+現在、新機能は Numba の制限のために Rust で実装されています。高頻度データのサイズを考慮すると、パフォーマンスが重要です。
+差し迫ったタスクは、Rust 実装をバックエンドとして使用して、Python の hftbacktest と Rust の hftbacktest を統合することです。
+一方で、現在異なるデータフォーマットを統一する必要があります。
+純粋な Python 側では、パフォーマンスレポートツールを改善して、より多くのパフォーマンスメトリクスを提供し、速度を向上させる必要があります。
 
-Please see the `roadmap <https://github.com/nkaz001/hftbacktest/blob/master/ROADMAP.md>`_.
+`roadmap <https://github.com/nkaz001/hftbacktest/blob/master/ROADMAP.md>`_ を参照してください。
 
-Contributing
-============
+貢献
+====
 
-Thank you for considering contributing to hftbacktest! Welcome any and all help to improve the project. If you have an
-idea for an enhancement or a bug fix, please open an issue or discussion on GitHub to discuss it.
+hftbacktest への貢献を検討していただきありがとうございます。プロジェクトの改善に向けたあらゆる支援を歓迎します。改善のアイデアやバグ修正がある場合は、GitHub で問題やディスカッションを開いて話し合ってください。
 
-The following items are examples of contributions you can make to this project:
+このプロジェクトに対して行うことができる貢献の例は次のとおりです。
 
-Please see the `roadmap <https://github.com/nkaz001/hftbacktest/blob/master/ROADMAP.md>`_.
+`roadmap <https://github.com/nkaz001/hftbacktest/blob/master/ROADMAP.md>`_ を参照してください。
 
 .. |python| image:: https://shields.io/badge/python-3.10-blue
     :alt: Python Version

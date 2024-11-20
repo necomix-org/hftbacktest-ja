@@ -1,11 +1,7 @@
 JIT Compilation Overhead
 ========================
 
-HftBacktest takes advantage of Numba's capabilities, relying on Numba JIT'ed classes. As a result, importing
-HftBacktest requires JIT compilation, which may take a few seconds. Additionally, the strategy function needs to be
-JIT'ed' for performant backtesting, which also takes time to compile. Although this may not be significant when
-backtesting for multiple days, it can still be bothersome. To minimize this overhead, you can consider using Numba's
-``cache`` feature. See the example below.
+HftBacktest は Numba の機能を活用しており、Numba JIT によってクラスがコンパイルされます。そのため、HftBacktest をインポートする際には JIT コンパイルが必要で、数秒かかることがあります。さらに、戦略関数もパフォーマンスの高いバックテストのために JIT コンパイルされる必要があり、これもコンパイルに時間がかかります。複数日のバックテストを行う場合にはそれほど重要ではないかもしれませんが、それでも煩わしいことがあります。このオーバーヘッドを最小限に抑えるために、Numba の ``cache`` 機能を使用することを検討してください。以下の例を参照してください。
 
 .. code-block:: python
 

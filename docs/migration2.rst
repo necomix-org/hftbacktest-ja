@@ -1,44 +1,30 @@
 ===============
-Migration to v2
+バージョン2への移行
 ===============
 
-Overview
+概要
 --------
 
-The migration from version 1 to version 2 introduces several significant changes that can cause errors if the same code
-is used without modification. It is highly recommended to review the updated tutorials. This guide aims to help you
-avoid common pitfalls during the migration process.
+バージョン1からバージョン2への移行では、同じコードを変更せずに使用するとエラーが発生する可能性があるいくつかの重要な変更が導入されます。更新されたチュートリアルを確認することを強くお勧めします。このガイドは、移行プロセス中の一般的な落とし穴を回避するのに役立ちます。
 
-Checking Success: Use ``elapse() == 0``
+成功の確認: ``elapse() == 0`` を使用
 ---------------------------------------
-In version 1, ``elapse`` function returns ``True`` on success and ``False`` otherwise. Typically, the strategy loop
-checks for successful elapsing using ``while elapse(duration)``. However, in version 2, elapse returns a code instead
-of a boolean, with ``0`` indicating success and any other value indicating an error. Consequently, the code should be
-updated to check if the return value equals ``0``.
+バージョン1では、``elapse`` 関数は成功時に ``True`` を返し、そうでない場合は ``False`` を返します。通常、戦略ループは ``while elapse(duration)`` を使用して成功を確認します。しかし、バージョン2では、elapse はブール値の代わりにコードを返し、``0`` が成功を示し、それ以外の値がエラーを示します。したがって、コードは戻り値が ``0`` であるかどうかを確認するように更新する必要があります。
 
-For instance: ``while elapse(duration) == 0`` If the code remains unchanged, it will fail because a return value of
-``0`` (indicating success) will be treated as ``False``. Other methods that involve elapsing, such as
-``submit_buy_order`` or ``submit_sell_order``, also return a code similar to ``elapse`` instead of a boolean. Ensure to
-check if their return values equal ``0`` to confirm success instead of checking for ``True``.
+例えば: ``while elapse(duration) == 0`` コードが変更されない場合、成功を示す ``0`` の戻り値が ``False`` として扱われるため、失敗します。elapse に関連する他のメソッド、例えば ``submit_buy_order`` や ``submit_sell_order`` もブール値の代わりに elapse と同様のコードを返します。成功を確認するために、それらの戻り値が ``0`` であるかどうかを確認してください。
 
-Data Format Changes
+データフォーマットの変更
 -------------------
-The data format fed into HftBacktest has undergone significant changes. It is strongly recommended to reprocess the data
-from raw data to preserve all information. However, if raw data is unavailable,
-:mod:`the data conversion utility <hftbacktest.data.utils.migration2>` from v1 to v2 is provided.
+HftBacktest に供給されるデータフォーマットは大幅に変更されました。すべての情報を保持するために、生データからデータを再処理することを強くお勧めします。ただし、生データが利用できない場合は、v1 から v2 への :mod:`データ変換ユーティリティ <hftbacktest.data.utils.migration2>` が提供されています。
 
-The major changes are as follows:
+主な変更点は次のとおりです。
 
-* SOA to AOS: The format has shifted from a columnar array (SOA) to a structured array (AOS).
+* SOA から AOS へ: フォーマットはカラム配列 (SOA) から構造化配列 (AOS) に変更されました。
 
-* Side Column Removal: ``side`` column has been removed. In version 2, the side is indicated by the ``ev`` field flags,
-  :const:`BUY_EVENT <hftbacktest.types.BUY_EVENT>` and :const:`SELL_EVENT <hftbacktest.types.SELL_EVENT>`.
+* サイドカラムの削除: ``side`` カラムが削除されました。バージョン2では、サイドは ``ev`` フィールドフラグ、:const:`BUY_EVENT <hftbacktest.types.BUY_EVENT>` および :const:`SELL_EVENT <hftbacktest.types.SELL_EVENT>` によって示されます。
 
-* Timestamp Handling: In version 1, the data utility corrects the event order by replacing one of the timestamps with
-  ``-1`` to indicate an invalid event on either the exchange or the local side. In version 2, the validity of events on
-  the exchange or local side is determined by `ev` field's :const:`EXCH_EVENT <hftbacktest.types.EXCH_EVENT>` and
-  :const:`LOCAL_EVENT <hftbacktest.types.LOCAL_EVENT>` flags.
+* タイムスタンプの処理: バージョン1では、データユーティリティはイベントの順序を修正するために、いずれかのタイムスタンプを ``-1`` に置き換えて、取引所またはローカル側の無効なイベントを示します。バージョン2では、取引所またはローカル側のイベントの有効性は、`ev` フィールドの :const:`EXCH_EVENT <hftbacktest.types.EXCH_EVENT>` および :const:`LOCAL_EVENT <hftbacktest.types.LOCAL_EVENT>` フラグによって決定されます。
 
-* Timestamp Unit: Although not strictly enforced, the timestamp unit has changed from microseconds to nanoseconds.
+* タイムスタンプ単位: 厳密には強制されていませんが、タイムスタンプ単位はマイクロ秒からナノ秒に変更されました。
 
-Additionally, the format for live order latency data has changed from SOA to AOS.
+さらに、ライブ注文レイテンシーデータのフォーマットも SOA から AOS に変更されました。
